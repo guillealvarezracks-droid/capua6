@@ -7,9 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile Menu Toggle
   setupMobileMenu();
 
-  // Events Filter
-  setupEventFilters();
-
   // Reservation Modal & WhatsApp Integrations
   setupReservationModal();
 
@@ -46,31 +43,6 @@ function setupMobileMenu() {
 
   mobileLinks.forEach(link => {
     link.addEventListener('click', () => toggleMenu(false));
-  });
-}
-
-/* Event Filter Cards */
-function setupEventFilters() {
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const eventCards = document.querySelectorAll('.event-card');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filter = btn.getAttribute('data-filter');
-
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      eventCards.forEach(card => {
-        const category = card.getAttribute('data-category');
-        if (filter === 'all' || category === filter) {
-          card.style.display = 'block';
-          card.classList.add('animate-fadeIn');
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
   });
 }
 
