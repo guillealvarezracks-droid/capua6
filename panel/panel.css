@@ -1,0 +1,233 @@
+/* panel/panel.css
+   Estilos propios del panel interno. CSS plano (sin @apply) para no depender
+   de que el CDN de Tailwind procese hojas externas: la maqueta usa clases de
+   Tailwind directamente en el HTML/JS y aquí solo lo que Tailwind no cubre
+   (grid del calendario, tarjetas, badges de estado...).
+*/
+
+body { font-family: 'Nunito Sans', system-ui, sans-serif; }
+
+/* --- Aviso de modo demostración, siempre visible --- */
+.demo-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #7c2d12;
+  color: #fed7aa;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* --- Pestañas de navegación --- */
+.panel-tab {
+  padding: 0.6rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #a3a3a3;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.panel-tab.is-active {
+  color: #f5f5f5;
+  border-bottom-color: #d4ad6a;
+}
+
+/* --- Botones --- */
+.panel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color .15s, border-color .15s;
+}
+.panel-btn-primary { background: #d4ad6a; color: #1c1a16; }
+.panel-btn-primary:hover { background: #e3c088; }
+.panel-btn-outline { background: transparent; border-color: #404040; color: #e5e5e5; }
+.panel-btn-outline:hover { border-color: #737373; }
+.panel-btn-danger { background: transparent; border-color: #9f1239; color: #fb7185; }
+.panel-btn-danger:hover { background: #4c0519; }
+.panel-btn-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; color: #d4d4d4;
+}
+.panel-btn-icon:hover { background: #262626; }
+
+.panel-fab {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 1.5rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  background: #d4ad6a;
+  color: #1c1a16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.45);
+  z-index: 20;
+}
+
+/* --- Filtros tipo chip (agenda) --- */
+.chip-filtro {
+  flex-shrink: 0;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid #404040;
+  color: #a3a3a3;
+  white-space: nowrap;
+}
+.chip-filtro.is-active { background: #d4ad6a; border-color: #d4ad6a; color: #1c1a16; }
+
+/* --- Tarjetas --- */
+.panel-card {
+  background: #171717;
+  border: 1px solid #262626;
+  border-radius: 0.9rem;
+  padding: 0.9rem 1rem;
+}
+.tarjeta-reserva {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #171717;
+  border: 1px solid #262626;
+  border-radius: 0.8rem;
+  padding: 0.7rem 0.9rem;
+}
+.tarjeta-reserva:hover { border-color: #404040; }
+
+.panel-h2 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #a3a3a3;
+  margin: 1rem 0 0.6rem;
+}
+
+/* --- Badges de estado --- */
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.badge-slate { background: #262626; color: #d4d4d4; }
+.badge-slate-outline { background: transparent; border: 1px solid #404040; color: #a3a3a3; }
+.badge-amber { background: #451a03; color: #fbbf24; }
+.badge-emerald { background: #052e16; color: #4ade80; }
+.badge-rose { background: #4c0519; color: #fb7185; }
+
+/* --- Formularios --- */
+.panel-form { padding: 1rem; }
+.panel-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #d4d4d4;
+  margin-bottom: 0.85rem;
+}
+.panel-input {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+  background: #0a0a0a;
+  border: 1px solid #404040;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  color: #f5f5f5;
+  font-size: 0.9rem;
+}
+.panel-input:focus { outline: 2px solid #d4ad6a; outline-offset: 1px; }
+.panel-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #d4d4d4;
+  margin-bottom: 0.85rem;
+}
+.panel-errores {
+  background: #4c0519;
+  color: #fecdd3;
+  font-size: 0.82rem;
+  border-radius: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.85rem;
+}
+
+/* --- Modal --- */
+#modal-content { background: #171717; }
+.panel-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0;
+  margin-bottom: 0.5rem;
+}
+.panel-modal-header h3 { font-weight: 700; font-size: 1.05rem; }
+.panel-modal-footer {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid #262626;
+}
+
+/* --- Ficha de reserva: lista de definición --- */
+.panel-dl { display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 0.8rem; font-size: 0.85rem; }
+.panel-dl dt { color: #737373; }
+.panel-dl dd { color: #e5e5e5; text-align: right; }
+
+/* --- Calendario --- */
+.cal-grid-cabecera {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.7rem;
+  color: #737373;
+  margin-bottom: 0.3rem;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+.cal-celda {
+  aspect-ratio: 1 / 1;
+  border-radius: 0.5rem;
+  border: 1px solid #262626;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  color: #d4d4d4;
+}
+.cal-vacia { border-color: transparent; }
+.cal-hoy { border-color: #d4ad6a; }
+.cal-seleccionada { background: #262626; }
+.cal-marcas { display: flex; gap: 0.2rem; min-height: 6px; }
+.cal-punto { width: 6px; height: 6px; border-radius: 999px; display: inline-block; }
+.cal-punto-confirmada { background: #4ade80; }
+.cal-punto-pendiente { background: #fbbf24; }
+.cal-punto-bloqueo { background: #fb7185; }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel interno de reservas · Capua 6 (demo)</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN: misma convención que la web pública, sin añadir build tools -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons CDN: misma librería que la web pública -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body class="bg-neutral-950 text-neutral-100 min-h-screen font-sans">
+
+  <!-- Aviso persistente de modo demostración: exigido por el encargo, siempre visible -->
+  <div class="demo-banner">
+    <i data-lucide="flask-conical" class="w-4 h-4 shrink-0"></i>
+    <span><strong>Modo demostración.</strong> No introducir datos reales de clientes. Todo lo que ves aquí es ficticio.</span>
+  </div>
+
+  <header class="border-b border-neutral-800 px-4 py-3 sticky top-0 bg-neutral-950/95 backdrop-blur z-30">
+    <div class="max-w-3xl mx-auto flex items-center justify-between gap-3">
+      <div>
+        <h1 class="font-bold text-lg leading-tight">Panel de reservas</h1>
+        <p class="text-xs text-neutral-500 leading-tight">Capua 6 — maqueta interna, fase 1</p>
+      </div>
+      <button type="button" id="btn-reset-demo" class="panel-btn panel-btn-outline text-xs !py-1.5 !px-2.5">
+        Reiniciar datos demo
+      </button>
+    </div>
+  </header>
+
+  <nav class="max-w-3xl mx-auto px-4 pt-3 flex gap-1 border-b border-neutral-800" aria-label="Secciones del panel">
+    <button type="button" class="panel-tab is-active" data-tab="agenda">Agenda</button>
+    <button type="button" class="panel-tab" data-tab="calendario">Calendario</button>
+    <button type="button" class="panel-tab" data-tab="bloqueos">Bloqueos</button>
+  </nav>
+
+  <main class="max-w-3xl mx-auto px-4 py-4 pb-28">
+    <div id="tab-content"></div>
+  </main>
+
+  <button type="button" id="btn-nueva-reserva" class="panel-fab" aria-label="Nueva consulta o reserva">
+    <i data-lucide="plus" class="w-6 h-6"></i>
+  </button>
+
+  <details class="max-w-3xl mx-auto px-4 pb-8 text-xs text-neutral-500">
+    <summary class="cursor-pointer select-none py-2">Sobre estos datos (leer antes de usar el panel)</summary>
+    <div class="space-y-2 pt-1 pb-4">
+      <p>Este panel guarda los datos únicamente en <strong>localStorage de este navegador</strong>, solo para poder probar la maqueta:</p>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>No se sincroniza entre dispositivos: lo que ves en este móvil u ordenador no aparece en otro.</li>
+        <li>No es un almacén seguro: no metas aquí datos reales de clientes.</li>
+        <li>No sustituye a la futura base de datos del proyecto: es solo para revisar cómo se comportaría el panel.</li>
+        <li>El botón "Reiniciar datos demo" borra tus cambios de prueba y vuelve a cargar el escenario ficticio de partida.</li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- Contenedor genérico de modales (formularios, fichas, bloqueos) -->
+  <div id="modal-root" class="fixed inset-0 z-50 hidden bg-black/70 overflow-y-auto">
+    <div id="modal-content" class="min-h-full sm:min-h-0 sm:max-w-lg sm:mx-auto sm:my-10"></div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+  <script>
+    window.addEventListener('load', () => { if (window.lucide) window.lucide.createIcons(); });
+  </script>
+</body>
+</html>

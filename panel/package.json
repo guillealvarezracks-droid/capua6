@@ -1,0 +1,10 @@
+{
+  "name": "capua6-panel",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Maqueta del panel interno de reservas de Capua 6 (fase 1: datos de demostración en localStorage).",
+  "type": "module",
+  "scripts": {
+    "test": "node js/business-rules.test.js"
+  }
+}
