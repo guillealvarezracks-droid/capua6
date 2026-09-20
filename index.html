@@ -53,8 +53,11 @@
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
+  <!-- Supabase JS (solo para leer disponibilidad pública: fecha + libre/ocupado, nada más) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-purple-500 selection:text-white relative">
 
@@ -87,6 +90,10 @@
           </a>
           <a href="#galeria" class="hover:text-purple-400 transition-colors py-2 relative group">
             Galería
+            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
+          </a>
+          <a href="#disponibilidad" class="hover:text-purple-400 transition-colors py-2 relative group">
+            Disponibilidad
             <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
           </a>
           <a href="#ubicacion" class="hover:text-purple-400 transition-colors py-2 relative group">
@@ -139,6 +146,9 @@
       </a>
       <a href="#galeria" class="mobile-nav-link flex items-center gap-4 text-slate-200 hover:text-purple-400">
         <i data-lucide="camera" class="w-5 h-5 text-amber-400"></i> Galería de Ambiente
+      </a>
+      <a href="#disponibilidad" class="mobile-nav-link flex items-center gap-4 text-slate-200 hover:text-purple-400">
+        <i data-lucide="calendar-days" class="w-5 h-5 text-emerald-400"></i> Disponibilidad
       </a>
       <a href="#ubicacion" class="mobile-nav-link flex items-center gap-4 text-slate-200 hover:text-purple-400">
         <i data-lucide="map-pin" class="w-5 h-5 text-purple-400"></i> Ubicación y Horarios
@@ -780,6 +790,55 @@
         </div>
 
       </div>
+    </div>
+  </section>
+
+  <!-- CALENDARIO DE DISPONIBILIDAD PÚBLICO -->
+  <section id="disponibilidad" class="py-20 relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+        <span class="section-label">
+          <i data-lucide="calendar-days" class="w-3.5 h-3.5"></i> Disponibilidad
+        </span>
+        <h2 class="font-heading text-3xl sm:text-5xl font-bold text-white">
+          ¿Qué días están <span class="text-accent font-normal">libres</span>?
+        </h2>
+        <div class="divider-gold divider-gold--center"></div>
+        <p class="text-slate-400 text-base">
+          Toca un día libre y te llevamos directo a WhatsApp con la fecha ya escrita. Es orientativo: la disponibilidad se confirma siempre por WhatsApp.
+        </p>
+      </div>
+
+      <div class="glass-card p-6 sm:p-8 rounded-3xl">
+        <div class="flex items-center justify-between mb-5">
+          <button type="button" id="disp-prev" aria-label="Mes anterior" class="p-2 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-300 hover:text-white hover:border-purple-500/40 transition-colors disabled:opacity-30 disabled:pointer-events-none">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+          <h3 id="disp-mes-label" class="font-heading text-lg sm:text-xl font-bold text-white capitalize">&nbsp;</h3>
+          <button type="button" id="disp-next" aria-label="Mes siguiente" class="p-2 rounded-xl bg-slate-900/60 border border-slate-800 text-slate-300 hover:text-white hover:border-purple-500/40 transition-colors disabled:opacity-30 disabled:pointer-events-none">
+            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <p id="disp-estado" class="text-sm text-slate-400 text-center py-10">Cargando disponibilidad…</p>
+
+        <div id="disp-grid-wrap" class="hidden">
+          <div class="grid grid-cols-7 gap-1.5 text-center text-[11px] uppercase tracking-wide text-slate-500 mb-2">
+            <span>D</span><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span>
+          </div>
+          <div id="disp-grid" class="grid grid-cols-7 gap-1.5"></div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-400 mt-6 pt-5 border-t border-slate-800">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Libre — toca para consultar</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span> No disponible</span>
+        </div>
+        <p class="text-xs text-slate-500 text-center mt-4">
+          Para el karaoke de los domingos no hace falta mirar aquí: es acceso abierto al público, sin reserva.
+        </p>
+      </div>
+
     </div>
   </section>
 

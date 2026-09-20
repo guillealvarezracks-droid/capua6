@@ -591,6 +591,45 @@ html { scroll-behavior: smooth; }
   .faq-item__a { padding: 0 18px 18px; }
 }
 
+/* === CALENDARIO DE DISPONIBILIDAD PÚBLICO === */
+.disp-dia {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+.disp-dia--libre {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-out-expo), background-color 0.15s;
+}
+.disp-dia--libre:hover,
+.disp-dia--libre:focus-visible {
+  background: rgba(16, 185, 129, 0.25);
+  transform: translateY(-1px);
+}
+.disp-dia--libre:focus-visible {
+  outline: 2px solid #6ee7b7;
+  outline-offset: 1px;
+}
+.disp-dia--ocupado {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-border-subtle);
+}
+.disp-dia--pasado {
+  color: rgba(255, 255, 255, 0.12);
+}
+.disp-dia--hoy {
+  box-shadow: 0 0 0 1.5px var(--color-primary);
+}
+
 /* === REDUCED MOTION === */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
