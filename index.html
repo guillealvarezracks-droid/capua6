@@ -54,7 +54,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-purple-500 selection:text-white relative">
 
@@ -86,7 +86,7 @@
             <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
           </a>
           <a href="#galeria" class="hover:text-purple-400 transition-colors py-2 relative group">
-            Galeria
+            Galería
             <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
           </a>
           <a href="#ubicacion" class="hover:text-purple-400 transition-colors py-2 relative group">
@@ -110,7 +110,7 @@
           <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20organizar%20un%20evento%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Modalidad:%20[Espicha%20/%20Híbrida%20/%20Alquiler%20exclusivo%20/%20Evento%20a%20medida%20/%20Necesito%20asesoramiento]%0A%0A¿Podéis%20ayudarme%20con%20la%20disponibilidad%20y%20las%20opciones?" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-pink-500">
             Reservar
           </a>
-          <button id="mobile-menu-btn" aria-label="Abrir menú" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none">
+          <button id="mobile-menu-btn" type="button" aria-label="Abrir menú" aria-controls="mobile-menu" aria-expanded="false" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none">
             <i data-lucide="menu" class="w-6 h-6"></i>
           </button>
         </div>
@@ -120,12 +120,12 @@
   </header>
 
   <!-- MOBILE MENU DRAWER -->
-  <div id="mobile-menu" class="fixed inset-0 z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden bg-slate-950/95 backdrop-blur-2xl flex flex-col">
+  <div id="mobile-menu" inert class="fixed inset-0 z-50 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden bg-slate-950/95 backdrop-blur-2xl flex flex-col">
     <div class="flex items-center justify-between p-6 border-b border-slate-800">
       <div class="flex items-center space-x-3">
         <img src="assets/logo-capua6.jpg" alt="CAPUA 6 · Sala de Eventos" class="h-12 w-12 rounded-full object-cover ring-1 ring-brand-gold/40">
       </div>
-      <button id="close-menu-btn" class="p-2 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white">
+      <button id="close-menu-btn" type="button" aria-label="Cerrar menú" class="p-2 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white">
         <i data-lucide="x" class="w-6 h-6"></i>
       </button>
     </div>
@@ -395,7 +395,7 @@
       <div class="mt-8 flex items-start sm:items-center gap-3 max-w-3xl mx-auto px-5 py-4 rounded-2xl bg-purple-950/40 border border-purple-500/20 text-xs sm:text-sm text-purple-200">
         <i data-lucide="info" class="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0"></i>
         <span>
-          <strong class="text-white">Aforo máximo: 50 personas</strong> (no confundir con plazas sentadas). La hora de inicio se acuerda contigo para que la duración contratada encaje dentro del horario autorizado — más detalles en las <a href="#faq" class="underline decoration-purple-400/50 hover:text-white">Preguntas Frecuentes</a>.
+          <strong class="text-white">Aforo máximo de 50 personas.</strong> Disponemos de algunos asientos, pero no se garantiza asiento para todo el grupo. La hora de inicio se acuerda contigo para que la duración contratada encaje dentro del horario autorizado — más detalles en las <a href="#faq" class="underline decoration-purple-400/50 hover:text-white">Preguntas Frecuentes</a>.
         </span>
       </div>
 
@@ -805,7 +805,7 @@
     <div id="chat-panel" class="chat-panel" role="dialog" aria-label="Chat de Capua 6" aria-hidden="true">
       <div class="chat-panel__header">
         <div>
-          <span class="chat-panel__label">En línea &bull; Respuesta rápida</span>
+          <span class="chat-panel__label">Contacto por WhatsApp</span>
           <h4 class="chat-panel__title">Capua <span class="text-accent font-normal">6</span></h4>
         </div>
         <button id="chat-close" class="chat-panel__close" type="button" aria-label="Cerrar chat">
@@ -830,7 +830,7 @@
         </div>
       </div>
 
-      <div class="chat-panel__foot">Te respondemos por WhatsApp en unos minutos.</div>
+      <div class="chat-panel__foot">Déjanos tu consulta y te responderemos lo antes posible.</div>
     </div>
 
     <!-- Launcher button -->

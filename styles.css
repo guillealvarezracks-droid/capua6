@@ -74,6 +74,8 @@ h1, h2, h3, h4, h5, h6 {
 section[id] {
   padding-top: clamp(5rem, 10vh, 7.5rem);
   padding-bottom: clamp(5rem, 10vh, 7.5rem);
+  /* Evita que la cabecera fija (80px) tape el destino al saltar por ancla */
+  scroll-margin-top: 96px;
 }
 
 /* === UTILIDADES DE MARCA === */

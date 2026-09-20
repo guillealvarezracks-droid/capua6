@@ -23,21 +23,40 @@ function setupMobileMenu() {
 
   if (!menuBtn || !mobileMenu) return;
 
+  let isOpen = false;
+
   const toggleMenu = (open) => {
+    isOpen = open;
     if (open) {
       mobileMenu.classList.remove('translate-x-full');
       mobileMenu.classList.add('translate-x-0');
+      mobileMenu.inert = false;
       document.body.style.overflow = 'hidden';
+      menuBtn.setAttribute('aria-expanded', 'true');
     } else {
       mobileMenu.classList.add('translate-x-full');
       mobileMenu.classList.remove('translate-x-0');
+      mobileMenu.inert = true;
       document.body.style.overflow = '';
+      menuBtn.setAttribute('aria-expanded', 'false');
     }
   };
 
-  menuBtn.addEventListener('click', () => toggleMenu(true));
-  if (closeBtn) closeBtn.addEventListener('click', () => toggleMenu(false));
+  // Cierra y devuelve el foco al botón que abrió el menú (botón de cierre / Escape)
+  const closeAndReturnFocus = () => {
+    toggleMenu(false);
+    menuBtn.focus();
+  };
 
+  menuBtn.addEventListener('click', () => toggleMenu(true));
+  if (closeBtn) closeBtn.addEventListener('click', closeAndReturnFocus);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) closeAndReturnFocus();
+  });
+
+  // Al elegir una sección del menú, se cierra y la navegación sigue su curso normal
+  // (no se fuerza el foco al botón, ya que la intención del usuario es ir a esa sección)
   mobileLinks.forEach(link => {
     link.addEventListener('click', () => toggleMenu(false));
   });
