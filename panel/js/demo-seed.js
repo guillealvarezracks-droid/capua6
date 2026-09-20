@@ -1,9 +1,11 @@
 // panel/js/demo-seed.js
 //
-// Datos ficticios para la maqueta. Nombres, teléfonos y notas inventados:
-// no corresponden a clientes reales. Las fechas se generan relativas al
-// día en que se abre el panel, para que la agenda y el calendario siempre
-// muestren algo relevante sin tener que tocar el código.
+// Datos ficticios de la fase de maqueta (localStorage). Desde que
+// data-layer.js habla con Supabase, este archivo YA NO se importa desde
+// ningún sitio del panel — se conserva solo como referencia de la forma de
+// los datos, y por si algún día hace falta un entorno de pruebas aparte
+// (por ejemplo, un segundo proyecto de Supabase "sandbox"). Nombres,
+// teléfonos y notas inventados: no corresponden a clientes reales.
 
 function pad2(n) {
   return String(n).padStart(2, '0');

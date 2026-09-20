@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel interno de reservas · Capua 6 (demo)</title>
+  <title>Panel interno de reservas · Capua 6</title>
   <meta name="robots" content="noindex, nofollow">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,54 +16,57 @@
   <!-- Lucide Icons CDN: misma librería que la web pública -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
+  <!-- Supabase JS (build UMD desde CDN, sin bundler): expone window.supabase.createClient -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+
   <link rel="stylesheet" href="panel.css">
 </head>
 <body class="bg-neutral-950 text-neutral-100 min-h-screen font-sans">
 
-  <!-- Aviso persistente de modo demostración: exigido por el encargo, siempre visible -->
-  <div class="demo-banner">
-    <i data-lucide="flask-conical" class="w-4 h-4 shrink-0"></i>
-    <span><strong>Modo demostración.</strong> No introducir datos reales de clientes. Todo lo que ves aquí es ficticio.</span>
+  <!-- Pantalla de acceso: visible solo mientras no hay sesión iniciada -->
+  <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+    <form id="form-login" class="w-full max-w-sm panel-form panel-card">
+      <h1 class="font-bold text-lg leading-tight mb-0.5">Panel de reservas</h1>
+      <p class="text-xs text-neutral-500 mb-4">Capua 6 — acceso interno</p>
+      <div id="login-error" class="panel-errores hidden"></div>
+      <label class="panel-label">Email
+        <input required type="email" name="email" class="panel-input" autocomplete="username">
+      </label>
+      <label class="panel-label">Contraseña
+        <input required type="password" name="password" class="panel-input" autocomplete="current-password">
+      </label>
+      <button type="submit" class="panel-btn panel-btn-primary w-full mt-1">Entrar</button>
+    </form>
   </div>
 
-  <header class="border-b border-neutral-800 px-4 py-3 sticky top-0 bg-neutral-950/95 backdrop-blur z-30">
-    <div class="max-w-3xl mx-auto flex items-center justify-between gap-3">
-      <div>
-        <h1 class="font-bold text-lg leading-tight">Panel de reservas</h1>
-        <p class="text-xs text-neutral-500 leading-tight">Capua 6 — maqueta interna, fase 1</p>
+  <!-- Contenido del panel: oculto hasta que se confirma la sesión -->
+  <div id="app-shell" class="hidden">
+    <header class="border-b border-neutral-800 px-4 py-3 sticky top-0 bg-neutral-950/95 backdrop-blur z-30">
+      <div class="max-w-3xl mx-auto flex items-center justify-between gap-3">
+        <div>
+          <h1 class="font-bold text-lg leading-tight">Panel de reservas</h1>
+          <p class="text-xs text-neutral-500 leading-tight" id="user-email"></p>
+        </div>
+        <button type="button" id="btn-logout" class="panel-btn panel-btn-outline text-xs !py-1.5 !px-2.5">
+          Cerrar sesión
+        </button>
       </div>
-      <button type="button" id="btn-reset-demo" class="panel-btn panel-btn-outline text-xs !py-1.5 !px-2.5">
-        Reiniciar datos demo
-      </button>
-    </div>
-  </header>
+    </header>
 
-  <nav class="max-w-3xl mx-auto px-4 pt-3 flex gap-1 border-b border-neutral-800" aria-label="Secciones del panel">
-    <button type="button" class="panel-tab is-active" data-tab="agenda">Agenda</button>
-    <button type="button" class="panel-tab" data-tab="calendario">Calendario</button>
-    <button type="button" class="panel-tab" data-tab="bloqueos">Bloqueos</button>
-  </nav>
+    <nav class="max-w-3xl mx-auto px-4 pt-3 flex gap-1 border-b border-neutral-800" aria-label="Secciones del panel">
+      <button type="button" class="panel-tab is-active" data-tab="agenda">Agenda</button>
+      <button type="button" class="panel-tab" data-tab="calendario">Calendario</button>
+      <button type="button" class="panel-tab" data-tab="bloqueos">Bloqueos</button>
+    </nav>
 
-  <main class="max-w-3xl mx-auto px-4 py-4 pb-28">
-    <div id="tab-content"></div>
-  </main>
+    <main class="max-w-3xl mx-auto px-4 py-4 pb-28">
+      <div id="tab-content"></div>
+    </main>
 
-  <button type="button" id="btn-nueva-reserva" class="panel-fab" aria-label="Nueva consulta o reserva">
-    <i data-lucide="plus" class="w-6 h-6"></i>
-  </button>
-
-  <details class="max-w-3xl mx-auto px-4 pb-8 text-xs text-neutral-500">
-    <summary class="cursor-pointer select-none py-2">Sobre estos datos (leer antes de usar el panel)</summary>
-    <div class="space-y-2 pt-1 pb-4">
-      <p>Este panel guarda los datos únicamente en <strong>localStorage de este navegador</strong>, solo para poder probar la maqueta:</p>
-      <ul class="list-disc pl-5 space-y-1">
-        <li>No se sincroniza entre dispositivos: lo que ves en este móvil u ordenador no aparece en otro.</li>
-        <li>No es un almacén seguro: no metas aquí datos reales de clientes.</li>
-        <li>No sustituye a la futura base de datos del proyecto: es solo para revisar cómo se comportaría el panel.</li>
-        <li>El botón "Reiniciar datos demo" borra tus cambios de prueba y vuelve a cargar el escenario ficticio de partida.</li>
-      </ul>
-    </div>
-  </details>
+    <button type="button" id="btn-nueva-reserva" class="panel-fab" aria-label="Nueva consulta o reserva">
+      <i data-lucide="plus" class="w-6 h-6"></i>
+    </button>
+  </div>
 
   <!-- Contenedor genérico de modales (formularios, fichas, bloqueos) -->
   <div id="modal-root" class="fixed inset-0 z-50 hidden bg-black/70 overflow-y-auto">

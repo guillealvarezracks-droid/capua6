@@ -1,11 +1,11 @@
 // panel/js/app.js
 //
 // UI y estado del panel. Renderizado con plantillas de texto (innerHTML),
-// sin frameworks: para el tamaño de esta maqueta es más que suficiente y
+// sin frameworks: para el tamaño de este panel es más que suficiente y
 // evita añadir una dependencia grande solo para pintar unas pocas pantallas.
 //
 // Estructura del archivo:
-//   1. Estado y arranque
+//   1. Acceso (login/logout) y arranque
 //   2. Utilidades de formato
 //   3. Vista: Agenda
 //   4. Vista: Calendario
@@ -13,12 +13,13 @@
 //   6. Modal: crear/editar reserva
 //   7. Modal: ficha de reserva (detalle + pagos)
 //   8. Modal: bloquear fecha
-//   9. Acciones (confirmar, cancelar, pagos, bloqueos, reset demo)
+//   9. Acciones (confirmar, cancelar, pagos, bloqueos)
 
 import * as BR from './business-rules.js';
-import { ReservasRepo, BloqueosRepo, resetearDatosDemo } from './data-layer.js';
+import { ReservasRepo, BloqueosRepo } from './data-layer.js';
+import { supabase } from './supabase-client.js';
 
-// === 1. ESTADO Y ARRANQUE ===================================================
+// === 1. ACCESO (LOGIN/LOGOUT) Y ARRANQUE ====================================
 
 const state = {
   tab: 'agenda', // 'agenda' | 'calendario' | 'bloqueos'
@@ -51,15 +52,69 @@ function iconos() {
   if (window.lucide) window.lucide.createIcons();
 }
 
+let panelYaMontado = false; // evita cablear los listeners del panel más de una vez si hay varios login/logout seguidos
+
 async function iniciar() {
-  await cargarDatos();
-  wireTabs();
-  wireResetDemo();
-  wireNuevaReserva();
-  renderTab();
+  wireLogin();
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) await mostrarApp(session);
+  else mostrarLogin();
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session) mostrarApp(session);
+    if (event === 'SIGNED_OUT') mostrarLogin();
+  });
 }
 
 document.addEventListener('DOMContentLoaded', iniciar);
+
+function wireLogin() {
+  $('#form-login')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const boton = f.querySelector('button[type="submit"]');
+    const errorBox = $('#login-error');
+    errorBox.classList.add('hidden');
+    boton.disabled = true;
+    boton.textContent = 'Entrando…';
+    const { error } = await supabase.auth.signInWithPassword({
+      email: f.email.value.trim(),
+      password: f.password.value,
+    });
+    boton.disabled = false;
+    boton.textContent = 'Entrar';
+    if (error) {
+      errorBox.textContent = 'No se pudo iniciar sesión: revisa el email y la contraseña.';
+      errorBox.classList.remove('hidden');
+      return;
+    }
+    f.reset();
+  });
+
+  $('#btn-logout')?.addEventListener('click', async () => {
+    await supabase.auth.signOut();
+  });
+}
+
+function mostrarLogin() {
+  $('#login-screen')?.classList.remove('hidden');
+  $('#app-shell')?.classList.add('hidden');
+}
+
+async function mostrarApp(session) {
+  $('#login-screen')?.classList.add('hidden');
+  $('#app-shell')?.classList.remove('hidden');
+  const emailEl = $('#user-email');
+  if (emailEl) emailEl.textContent = session.user.email;
+
+  if (!panelYaMontado) {
+    wireTabs();
+    wireNuevaReserva();
+    panelYaMontado = true;
+  }
+  await refrescar();
+}
 
 function wireTabs() {
   $$('.panel-tab').forEach((btn) => {
@@ -73,14 +128,6 @@ function wireTabs() {
 
 function wireNuevaReserva() {
   $('#btn-nueva-reserva')?.addEventListener('click', () => abrirFormularioReserva());
-}
-
-function wireResetDemo() {
-  $('#btn-reset-demo')?.addEventListener('click', async () => {
-    if (!confirm('Esto borra los cambios que hayas hecho en esta maqueta y vuelve a cargar los datos ficticios de partida. ¿Continuar?')) return;
-    await resetearDatosDemo();
-    await refrescar();
-  });
 }
 
 function renderTab() {
@@ -322,7 +369,14 @@ function renderDetalleDia(root, fecha, items, bloqueada) {
   $('#btn-dia-bloquear', root)?.addEventListener('click', () => abrirFormularioBloqueo(fecha));
   $('#btn-dia-desbloquear', root)?.addEventListener('click', async () => {
     const b = state.bloqueos.find((x) => x.date === fecha);
-    if (b) await BloqueosRepo.eliminar(b.id);
+    if (b) {
+      try {
+        await BloqueosRepo.eliminar(b.id);
+      } catch (err) {
+        alert(`No se ha podido desbloquear la fecha: ${err.message}`);
+        return;
+      }
+    }
     await refrescar();
   });
 }
@@ -352,7 +406,12 @@ function renderBloqueos(root) {
   $('#btn-nuevo-bloqueo', root).addEventListener('click', () => abrirFormularioBloqueo());
   $$('[data-desbloquear]', root).forEach((btn) => {
     btn.addEventListener('click', async () => {
-      await BloqueosRepo.eliminar(btn.dataset.desbloquear);
+      try {
+        await BloqueosRepo.eliminar(btn.dataset.desbloquear);
+      } catch (err) {
+        alert(`No se ha podido desbloquear la fecha: ${err.message}`);
+        return;
+      }
       await refrescar();
     });
   });
@@ -536,10 +595,15 @@ function abrirFormularioReserva(id = null, fechaPrefijada = null) {
       return;
     }
 
-    if (existente) {
-      await ReservasRepo.actualizar(existente.id, datos);
-    } else {
-      await ReservasRepo.crear(datos);
+    try {
+      if (existente) {
+        await ReservasRepo.actualizar(existente.id, datos);
+      } else {
+        await ReservasRepo.crear(datos);
+      }
+    } catch (err) {
+      mostrarErroresForm([`No se ha podido guardar: ${err.message}`]);
+      return;
     }
     cerrarModal();
     await refrescar();
@@ -625,7 +689,7 @@ function abrirFichaReserva(id) {
           <button type="submit" class="panel-btn panel-btn-outline whitespace-nowrap">Registrar pago</button>
         </form>
         <p class="text-xs text-neutral-500 mt-1">Registrar un pago es una acción manual, después de comprobarlo tú mismo. No verifica transferencias automáticamente.</p>
-      ` : `<p class="text-xs text-neutral-500 mt-2">Reserva cancelada: el historial de pagos se conserva. Cualquier devolución se gestiona aparte, fuera de esta maqueta.</p>`}
+      ` : `<p class="text-xs text-neutral-500 mt-2">Reserva cancelada: el historial de pagos se conserva. Cualquier devolución se gestiona aparte, este panel no la registra automáticamente.</p>`}
 
       <div id="ficha-errores" class="panel-errores hidden mt-2"></div>
 
@@ -639,6 +703,13 @@ function abrirFichaReserva(id) {
 
   $('#btn-editar').addEventListener('click', () => abrirFormularioReserva(r.id));
 
+  function mostrarErrorFicha(mensaje) {
+    const box = $('#ficha-errores');
+    if (!box) return;
+    box.innerHTML = `<div>• ${esc(mensaje)}</div>`;
+    box.classList.remove('hidden');
+  }
+
   $('#btn-confirmar')?.addEventListener('click', async () => {
     const errores = BR.validarParaConfirmar(r, { reservas: state.reservas, bloqueos: state.bloqueos });
     if (errores.length) {
@@ -647,14 +718,24 @@ function abrirFichaReserva(id) {
       box.classList.remove('hidden');
       return;
     }
-    await ReservasRepo.actualizar(r.id, { status: 'confirmada' });
+    try {
+      await ReservasRepo.actualizar(r.id, { status: 'confirmada' });
+    } catch (err) {
+      mostrarErrorFicha(`No se ha podido confirmar: ${err.message}`);
+      return;
+    }
     cerrarModal();
     await refrescar();
   });
 
   $('#btn-cancelar')?.addEventListener('click', async () => {
     if (!confirm('¿Cancelar esta reserva? El historial de pagos se conserva y no se registra ninguna devolución automática.')) return;
-    await ReservasRepo.actualizar(r.id, { status: 'cancelada' });
+    try {
+      await ReservasRepo.actualizar(r.id, { status: 'cancelada' });
+    } catch (err) {
+      mostrarErrorFicha(`No se ha podido cancelar: ${err.message}`);
+      return;
+    }
     cerrarModal();
     await refrescar();
   });
@@ -662,12 +743,17 @@ function abrirFichaReserva(id) {
   $('#form-pago')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const f = e.target;
-    await ReservasRepo.añadirPago(r.id, {
-      amount: Number(f.amount.value),
-      date: f.date.value,
-      method: f.method.value,
-      note: '',
-    });
+    try {
+      await ReservasRepo.añadirPago(r.id, {
+        amount: Number(f.amount.value),
+        date: f.date.value,
+        method: f.method.value,
+        note: '',
+      });
+    } catch (err) {
+      mostrarErrorFicha(`No se ha podido registrar el pago: ${err.message}`);
+      return;
+    }
     cerrarModal();
     await refrescar();
     abrirFichaReserva(r.id);
@@ -675,7 +761,12 @@ function abrirFichaReserva(id) {
 
   $$('[data-quitar-pago]').forEach((btn) => {
     btn.addEventListener('click', async () => {
-      await ReservasRepo.eliminarPago(r.id, btn.dataset.quitarPago);
+      try {
+        await ReservasRepo.eliminarPago(r.id, btn.dataset.quitarPago);
+      } catch (err) {
+        mostrarErrorFicha(`No se ha podido quitar el pago: ${err.message}`);
+        return;
+      }
       await refrescar();
       abrirFichaReserva(r.id);
     });
@@ -697,6 +788,7 @@ function abrirFormularioBloqueo(fechaPrefijada = null) {
       <label class="panel-label">Motivo (interno, nunca se muestra en la web pública)
         <textarea name="reason" class="panel-input" rows="2" placeholder="Ej. mantenimiento, cierre por vacaciones, evento privado sin publicar..."></textarea>
       </label>
+      <div id="bloqueo-errores" class="panel-errores hidden"></div>
       <div class="panel-modal-footer">
         <button type="button" id="modal-cancel" class="panel-btn panel-btn-outline">Cancelar</button>
         <button type="submit" class="panel-btn panel-btn-primary">Bloquear</button>
@@ -707,7 +799,14 @@ function abrirFormularioBloqueo(fechaPrefijada = null) {
   $('#form-bloqueo').addEventListener('submit', async (e) => {
     e.preventDefault();
     const f = e.target;
-    await BloqueosRepo.crear({ date: f.date.value, reason: f.reason.value.trim() });
+    try {
+      await BloqueosRepo.crear({ date: f.date.value, reason: f.reason.value.trim() });
+    } catch (err) {
+      const box = $('#bloqueo-errores');
+      box.textContent = `No se ha podido bloquear la fecha: ${err.message}`;
+      box.classList.remove('hidden');
+      return;
+    }
     cerrarModal();
     await refrescar();
   });

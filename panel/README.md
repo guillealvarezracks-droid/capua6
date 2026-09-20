@@ -1,240 +1,186 @@
-# Panel interno de reservas — Capua 6 (maqueta, fase 1)
+# Panel interno de reservas — Capua 6
 
-> **Modo demostración.** Todo lo que hay en esta carpeta usa datos ficticios.
-> No hay clientes reales, no hay backend real y no está enlazado desde la web
-> pública. No se ha hecho `git commit` ni `git push` de nada de esto: está
-> pendiente de que lo revises y lo apruebes.
+> **Estado: conectado a datos reales.** Desde este cambio, el panel guarda
+> las reservas en una base de datos real (Supabase), protegida por login.
+> Ya no hay banner de demostración ni botón de "reiniciar datos demo": lo
+> que se cree, edite o borre aquí es de verdad. No se han cargado datos
+> ficticios en la base de datos real — empieza vacía.
 
 ## 1. Qué es esto
 
-Una maqueta **funcional** (no solo un diseño estático) del futuro panel de
-gestión interna de reservas: agenda, calendario mensual, ficha de
-reserva/pagos y gestión de fechas bloqueadas. Vive en `panel/`, separada por
-completo de la web pública (`index.html`, `styles.css`, `app.js` en la raíz
-del proyecto no se han tocado).
+El panel de gestión interna de reservas de Capua 6: agenda, calendario
+mensual, ficha de reserva/pagos y gestión de fechas bloqueadas. Vive en
+`panel/`, separado por completo de la web pública (`index.html`,
+`styles.css`, `app.js` en la raíz del proyecto no se han tocado en ningún
+momento).
 
-## 2. Cómo abrirlo
+Empezó como una maqueta con datos ficticios en `localStorage` (fase 1) y
+ahora, tras revisarla y aprobarla, está conectada a un proyecto real de
+Supabase (fase 2). El diseño en capas se pensó desde el principio para que
+ese salto no obligara a rehacer pantallas — ver el punto 3.
 
-Los archivos de `panel/js/*.js` usan `import`/`export` (módulos ES). Los
-navegadores bloquean módulos cargados directamente desde `file://` por CORS,
-así que hace falta un servidor local muy simple (no build, no instalación):
+## 2. Cómo entrar
+
+Es la misma URL de siempre del panel (dentro del despliegue de GitHub
+Pages). Al abrirla, pide **email y contraseña**: solo entran las cuentas
+dadas de alta en Supabase (el dueño y su padre). Sin sesión iniciada, la
+pantalla de login es lo único que se ve — ni una fila de datos sale hacia
+el navegador sin haber iniciado sesión (lo impone la base de datos, no solo
+la pantalla de login).
+
+Para desarrollo local (abrir el código en tu propio ordenador antes de
+subir cambios): hace falta un servidor local simple, porque los módulos ES
+no cargan por `file://`:
 
 ```bash
 cd panel
 npx serve .          # o: python -m http.server 8000
 ```
 
-o, si tienes Node y prefieres no instalar nada, cualquier servidor estático
-que sirva la carpeta `panel/` vale. Abre después `http://localhost:PUERTO/`
-en el navegador. Al cargar, si es la primera vez, se rellena solo con datos
-de demostración (ver `js/demo-seed.js`).
-
-Hay un botón **"Reiniciar datos demo"** arriba a la derecha por si quieres
-volver al punto de partida después de trastear.
-
-## 3. Estructura elegida (antes de implementar, como pediste)
+## 3. Estructura (sigue siendo la misma, solo cambió una pieza)
 
 Sin frameworks ni bundler — el mismo criterio que ya usa la web pública
-(HTML + Tailwind por CDN + JS module nativo). Para el tamaño de este panel
-habría sido sobre-ingeniería añadir React/Vue/una build tool.
+(HTML + Tailwind por CDN + JS module nativo).
 
 ```
 panel/
-  index.html          shell de la página: banner de demo, pestañas, modal genérico
-  panel.css            estilos propios del panel (no toca styles.css de la web pública)
-  package.json         solo {"type":"module"} + script "test" — sin dependencias
+  index.html              shell: pantalla de login + pestañas + modal genérico
+  panel.css                estilos propios del panel
+  package.json             solo {"type":"module"} + script "test" — sin dependencias
+  supabase-setup.sql       SQL para crear las tablas y los permisos (ya ejecutado)
   js/
-    business-rules.js       reglas de negocio puras (sin DOM, sin localStorage)
+    business-rules.js       reglas de negocio puras — SIN CAMBIOS en este paso
     business-rules.test.js  pruebas automáticas de esas reglas (Node, sin framework)
-    data-layer.js            única pieza que toca localStorage — Repos async
-    demo-seed.js              datos ficticios de partida
-    app.js                    UI: estado, render de pantallas, formularios, modales
+    supabase-config.js       URL del proyecto + clave pública de Supabase
+    supabase-client.js       cliente de Supabase compartido (datos + login)
+    data-layer.js             habla con Supabase — única pieza reescrita en este paso
+    demo-seed.js              datos ficticios de la fase de maqueta, YA NO usados
+    app.js                    UI: login/logout, estado, pantallas, formularios, modales
 ```
 
-La idea central es la **separación en tres capas**, pensada ya para el
-backend real del futuro:
+La separación en capas es la que ya permitió este cambio sin rehacer nada:
 
-1. **`business-rules.js`** — cálculo de horarios, aforo, mínimos, precios de
-   referencia, estados de pago y conflictos de disponibilidad. Funciones
-   puras: reciben datos, devuelven datos, no saben que existe un DOM ni un
-   localStorage. Por eso se pueden probar con Node directamente y son las
-   mismas que, el día de mañana, podrían ejecutarse en un servidor o una
-   Cloud Function sin cambiar una línea.
-2. **`data-layer.js`** — `ReservasRepo` y `BloqueosRepo`, con métodos
-   **siempre asíncronos** (`async listar()`, `async crear()`...) aunque hoy
-   por dentro solo llamen a `localStorage`. El día que haya un backend real,
-   solo hay que reescribir el interior de este archivo (cambiar
-   `localStorage.getItem` por `fetch('/api/...')`, por ejemplo): ninguna
-   pantalla tiene que tocarse porque todas hablan con los Repos, no con
-   `localStorage` directamente.
-3. **`app.js`** — toda la interfaz. Usa las dos capas anteriores, nunca
-   `localStorage` ni las reglas de negocio "a mano".
+1. **`business-rules.js`** — aforo, mínimos, horarios, precios de
+   referencia, estados de pago, conflictos de disponibilidad. No sabe nada
+   de dónde viven los datos. **No se ha tocado ni una línea** al pasar a
+   Supabase.
+2. **`data-layer.js`** — antes hablaba con `localStorage`, ahora habla con
+   Supabase, pero de fuera se ve exactamente igual: `ReservasRepo.listar()`,
+   `.crear()`, `.actualizar()`, `.añadirPago()`... todas las pantallas
+   siguen llamando a estos mismos métodos sin saber qué hay detrás.
+3. **`app.js`** — se le ha añadido la pantalla de login/logout y se le ha
+   quitado lo específico de la maqueta (banner de demo, botón de reset).
+   El resto de pantallas no ha cambiado.
 
-## 4. Qué se puede probar en esta maqueta
+## 4. La base de datos
 
+Tres tablas en Postgres (ver `supabase-setup.sql`, ya ejecutado en el
+proyecto): `reservas`, `pagos` (con su `reserva_id` apuntando a la
+reserva) y `bloqueos`. Los nombres de columna son el equivalente en
+`snake_case` de los campos que ya usaba la maqueta (`client_name`,
+`start_date`, `is_holiday_eve`...); `data-layer.js` hace la conversión de
+ida y vuelta.
+
+**Seguridad (RLS — Row Level Security):** las tres tablas tienen activada
+la seguridad por fila con una política que exige sesión iniciada
+(`auth.role() = 'authenticated'`) para leer o escribir cualquier cosa. Esto
+es importante: la protección no depende de que el código de la pantalla
+oculte botones o no muestre datos — aunque alguien abriera la URL del panel
+sin haber iniciado sesión, la base de datos no le devolvería ni una fila.
+
+La clave que lleva el panel en el navegador (`supabase-config.js`, la
+"publishable key") está pensada para eso: es pública a propósito, la
+protección real la da RLS, no el secretismo de esa clave.
+
+## 5. Qué se puede hacer ya con datos reales
+
+- Iniciar y cerrar sesión (dueño y padre, cada uno con su propia cuenta).
 - Ver la agenda (próximos/pasados), filtrar por estado.
 - Ver el calendario mensual con indicadores de confirmada/consulta-pendiente/bloqueada.
-- Crear una consulta/reserva nueva, con cálculo automático de hora de fin y
+- Crear una consulta/reserva, con cálculo automático de hora de fin y
   precio de referencia según la modalidad (siempre editables a mano).
-- Confirmar una reserva (con todas las comprobaciones: aforo, mínimo,
-  horario, fecha bloqueada, conflicto con otra confirmada).
+- Confirmar una reserva (aforo, mínimo, horario, fecha bloqueada, conflicto
+  con otra confirmada — todo comprobado antes de guardar).
 - Cancelar una reserva (conserva el historial de pagos, no borra nada, no
   inventa una devolución).
-- Registrar y quitar pagos, ver el estado de pago y el importe pendiente
-  calculado en vivo.
-- Bloquear y desbloquear fechas, con motivo interno (nunca se muestra en la
-  ficha pública porque no existe ficha pública todavía).
-- Reiniciar los datos de demostración.
+- Registrar y quitar pagos, ver el estado de pago y el importe pendiente.
+- Bloquear y desbloquear fechas, con motivo interno.
 
-## 5. Pruebas ejecutadas y resultado
+## 6. Pruebas realizadas
 
-### 5.1 Pruebas automáticas reales (Node, no simuladas)
+### 6.1 Automáticas (Node, reglas de negocio)
 
 ```
 cd panel
 node js/business-rules.test.js
 ```
 
-**Resultado: 34 pasadas, 0 fallidas.** Cubren: fin por defecto de cada
-modalidad (incluida la Híbrida cruzando medianoche), evento que empieza
-viernes y termina de madrugada del sábado (pertenece al viernes), límites de
-cierre entre semana/fin de semana/víspera de festivo marcada a mano
-(03:30 / 05:30) con casos borde, precio de referencia de la Espicha (por
-persona) y la Híbrida (fijo), aforo máximo (50 sí / 51 no), mínimo de 20
-personas en Espicha e Híbrida (Exclusiva sin mínimo), estados de pago
-(sin_pagos/parcial/pagado/sin_precio) con el pendiente calculado bien,
-conflictos de disponibilidad (misma fecha de inicio, solape de intervalos,
-sin solape en reservas consecutivas, auto-exclusión al editar, que
-consultas/pendientes no bloqueen), rechazo de doble confirmación en la misma
-fecha, rechazo de confirmar en fecha bloqueada, acumulación de varios
-errores a la vez, y validación de campos obligatorios.
+**34 pasadas, 0 fallidas** — sin cambios respecto a la fase de maqueta,
+porque `business-rules.js` no se ha tocado.
 
-### 5.2 Pruebas manuales en navegador (Chrome headless, interacción real)
+### 6.2 Manuales en navegador, fase de maqueta (localStorage)
 
-Ejecutadas simulando clics y escritura reales sobre la interfaz servida en
-`localhost` (no solo revisando el código):
+Antes de conectar Supabase se probaron a fondo, con clics e interacción
+real (no solo revisando código), estos escenarios: creación con cálculo
+automático de fin/precio, rechazo por aforo máximo, doble confirmación en
+la misma fecha, bloqueo de fechas, cancelación conservando pagos, rechazo
+por mínimo de personas, rechazo al confirmar en fecha bloqueada, aforo en
+el límite exacto, y reinicio de datos. Todos correctos; se encontraron y
+corrigieron dos fallos reales (un `max` nativo del navegador que tapaba
+nuestro propio aviso de aforo, y un desfase de un día en la cuadrícula del
+calendario). Todo esto sigue aplicando tal cual porque es la misma interfaz
+y las mismas reglas de negocio — lo único que cambió por debajo es de dónde
+vienen y a dónde van los datos.
 
-| # | Escenario | Resultado |
-|---|-----------|-----------|
-| A | Crear consulta nueva: fin y precio de referencia se calculan solos (Espicha 21:00 → 03:00, 25 personas → 700 €) | ✅ correcto |
-| B | Rechazo por aforo máximo (60 personas): mensaje "El aforo máximo es de 50 personas." | ✅ correcto (tras el fix del punto 6) |
-| C | Confirmar una reserva y luego intentar confirmar otra consulta con la misma fecha de inicio: la segunda se rechaza acumulando error de horario + "La fecha choca con otra reserva ya confirmada" | ✅ correcto |
-| D | Bloquear una fecha nueva: aparece en Bloqueos y en el Calendario | ✅ correcto |
-| E | Registrar un pago, cancelar la reserva, reabrir la ficha: sigue "Cancelada" y el pago sigue ahí | ✅ correcto |
-| F | Rechazo por mínimo de personas (Espicha con 10): "Espicha requiere un mínimo de 20 personas." | ✅ correcto |
-| G | Intentar confirmar una reserva en una fecha ya bloqueada: "Esa fecha está bloqueada y no se puede confirmar." | ✅ correcto |
-| H | Aforo en el límite exacto (50 personas): se acepta sin error | ✅ correcto |
-| I | "Reiniciar datos demo" restaura las 8 reservas y el bloqueo de partida | ✅ correcto |
-| — | Capturas de pantalla en móvil (390px) y escritorio (1280px) de agenda, calendario, bloqueos, ficha y formulario | ✅ sin desbordes horizontales ni solapes |
-| — | Consola del navegador sin excepciones JS en ningún escenario | ✅ (único aviso: el 404 automático del favicon, irrelevante) |
+### 6.3 Verificado ya contra el proyecto real de Supabase
 
-**Dos fallos reales se encontraron y se corrigieron durante estas pruebas**
-(no solo se comprobó que "funciona", se usó para depurar):
+- La página carga sin errores de JavaScript y muestra la pantalla de login
+  (nunca el panel) mientras no hay sesión.
+- Un intento de login con credenciales inexistentes se rechaza de verdad
+  contra el servidor de Supabase, mostrando el aviso "No se pudo iniciar
+  sesión" — confirma que el cliente está hablando con el proyecto real, no
+  con datos simulados.
 
-1. El campo de asistentes tenía un `max="50"` nativo del navegador que
-   interceptaba el envío del formulario antes de que corriera la validación
-   propia del panel, así que el aviso de "aforo máximo" nunca llegaba a
-   mostrarse (el navegador paraba el envío con su propio aviso genérico).
-   Se añadió `novalidate` al formulario de reserva para que sea siempre
-   nuestra validación, con sus mensajes en español, la que decida.
-2. La cuadrícula del calendario mensual tenía el desfase de días calculado
-   para una semana empezando en lunes, pero la cabecera de columnas empezaba
-   en domingo: los días aparecían una columna desplazados (por ejemplo, hoy
-   —domingo— salía bajo la columna "sáb"). Se corrigió el cálculo del
-   desfase para que coincida con la cabecera domingo-primero.
+### 6.4 Pendiente de probar (necesita que existan los dos usuarios)
 
-### 5.3 Qué queda solo "planeado", no probado (porque haría falta un backend real)
+En cuanto deis de alta las cuentas del dueño y del padre en Supabase
+(Authentication → Users), falta reprobar en caliente, ya con sesión real:
+crear/editar/confirmar/cancelar una reserva, registrar un pago y bloquear
+una fecha, comprobando que quedan guardados de verdad en la base de datos
+(no solo en la pantalla). Avísame cuando estén creados los usuarios y lo
+hacemos juntos antes de que entréis las primeras reservas reales de
+verdad.
 
-- **Concurrencia real**: dos personas confirmando la misma fecha en el mismo
-  instante desde dos dispositivos distintos. Con `localStorage` esto no
-  existe de verdad (cada dispositivo tiene su propia copia de los datos, sin
-  sincronizar), así que no se puede probar aquí — es precisamente el motivo
-  por el que hace falta una base de datos real con escritura atómica antes
-  de usar esto con clientes reales.
-- **Persistencia entre dispositivos**: por diseño, no se puede probar
-  porque `localStorage` no la tiene.
-- **Seguridad de acceso**: no hay login real que probar todavía (a
-  propósito, ver punto 7).
+## 7. Qué sigue sin estar hecho (a propósito)
 
-## 6. Qué es simulado y qué no
+- **Política de devoluciones** al cancelar una reserva con señal pagada:
+  no se ha inventado ninguna. El panel solo conserva el historial de pagos
+  tal cual; decidir qué hacer con ese dinero es una decisión del negocio,
+  no algo que debiera asumir el código.
+- **Concurrencia estricta**: hoy, dos personas confirmando la misma fecha
+  casi a la vez se detectan porque cada una comprueba conflictos contra los
+  datos que acaba de leer, pero no hay un bloqueo a nivel de base de datos
+  que lo impida de forma absoluta si el guardado ocurre en el mismísimo
+  instante. Con el volumen de un solo local esto es un riesgo bajo, pero
+  queda anotado como posible mejora futura (una restricción de exclusión en
+  Postgres) si algún día hiciera falta.
+- **Calendario público de disponibilidad**: sigue sin implementarse ni
+  enlazarse desde la web pública. `calcularDisponibilidadPublica()` en
+  `data-layer.js` sigue ahí, sin usar, demostrando cómo se separarían los
+  datos públicos (`{fecha, disponible}`) de los privados el día que se
+  decida construirlo de verdad.
 
-| Simulado (solo en esta maqueta) | Real (funciona de verdad) |
-|---|---|
-| Los datos: nombres, teléfonos, importes — todo ficticio | Toda la lógica de negocio: cálculo de horarios, precios de referencia, validaciones, detección de conflictos |
-| El almacenamiento: `localStorage` del navegador, no una base de datos | La separación de capas (reglas / datos / interfaz), lista para enchufar un backend real |
-| "Reiniciar datos demo" (no existiría en producción tal cual) | La interacción: crear, editar, confirmar, cancelar, pagar, bloquear — todo hace cambios reales en los datos (de demostración) y se refleja al instante |
-| No hay usuarios ni sesiones — cualquiera que abra el archivo ve y edita todo | — |
+## 8. Copia de seguridad
 
-## 7. Qué haría falta para pasar a datos reales
-
-1. **Una base de datos real** detrás de `data-layer.js` (sustituyendo el
-   interior de `ReservasRepo`/`BloqueosRepo`, sin tocar `app.js` ni
-   `business-rules.js`).
-2. **Autenticación real** para quien gestione el panel — hoy no hay ningún
-   login, ni siquiera de mentira: se decidió a propósito no simular un login
-   que diera una falsa sensación de seguridad.
-3. **Un dominio/hosting privado** para el panel, distinto de GitHub Pages
-   público (o protegido si se queda ahí), porque va a manejar datos
-   personales de clientes (nombre, teléfono) que no deben ser públicos.
-4. **Decidir la política de devoluciones** cuando se cancela una reserva con
-   señal pagada — deliberadamente no se ha inventado ninguna en esta
-   maqueta; hoy solo se conserva el historial de pagos tal cual.
-5. **Un calendario público de disponibilidad** (sección aparte, ver punto 8)
-   si se quiere mostrar en la web qué fechas están libres.
-
-## 8. Preparado para el futuro calendario público (sin implementarlo)
-
-En `data-layer.js` existe `calcularDisponibilidadPublica(fechas)`, **sin
-usar en ninguna pantalla ni enlazada desde la web pública**. Solo demuestra
-la separación: coge los mismos datos que usa el panel privado y devuelve
-ÚNICAMENTE `{ date, available }` por fecha — nunca nombres, teléfonos,
-modalidad, asistentes, horas exactas, precios, pagos, notas ni motivos de
-bloqueo.
-
-Esto es importante para cuando se construya de verdad: **ocultar campos en
-pantalla no basta**. Si la web pública llega a pedir datos de reservas a un
-backend, ese backend debe devolver desde el servidor solo `{fecha,
-disponible}` — los datos privados no deben ni salir hacia el navegador del
-visitante, aunque luego no se pinten. `calcularDisponibilidadPublica` es el
-sitio donde ese recorte ya ocurre, listo para que un futuro endpoint público
-lo use tal cual.
-
-## 9. Backend recomendado (sin contratar ni conectar nada)
-
-Para una necesidad de este tamaño (un solo local, un panel con pocos
-usuarios internos, un volumen de reservas bajo), recomendaría:
-
-**Supabase** (Postgres gestionado + autenticación integrada) o, como
-alternativa igual de razonable, **Firebase** (Firestore + Authentication).
-
-Por qué:
-
-- Ambos dan **base de datos + autenticación de usuarios reales** en el mismo
-  servicio, sin tener que montar y mantener un servidor propio — encaja con
-  no haber querido meter secretos ni servicios externos todavía en esta
-  fase.
-- La forma de acceder a los datos (colecciones/documentos o tablas simples)
-  encaja de forma casi directa con la forma en que ya está pensado
-  `ReservasRepo`/`BloqueosRepo`: sustituir el interior de esos métodos es un
-  cambio contenido, no una reescritura de las pantallas.
-- Tienen capa gratuita suficiente para el volumen de un solo local.
-- Autenticación real (usuario/contraseña o enlace mágico) para el personal
-  que gestione el panel, en vez del "sin login" actual.
-
-Lo que implicaría dar ese paso (para que se sepa de antemano, no para
-hacerlo ahora):
-
-- Dar de alta una cuenta y un proyecto en el servicio elegido.
-- Migrar los datos de `localStorage` a la base de datos real (aquí sí, con
-  datos reales de clientes, dejando de ser una maqueta).
-- Añadir un login real para quien use el panel, y decidir quién tiene
-  acceso.
-- Sacar el panel de una carpeta pública de GitHub Pages a un sitio no
-  indexado/protegido, ya que pasaría a tener datos personales reales.
-- Revisar entonces la política de protección de datos aplicable (los
-  clientes cuyos teléfonos y reservas se guarden).
+Los datos ahora viven en Supabase, no en este repositorio ni en el
+navegador. Supabase (plan gratuito) guarda copias de seguridad automáticas
+de los últimos días; si en algún momento quieres una exportación aparte
+(por ejemplo, antes de un cambio grande), puedo generarla bajo petición.
 
 ---
 
-Repite: esta carpeta no se ha subido a GitHub. Está a la espera de revisión
-y aprobación antes de cualquier `git add`/`commit`/`push`.
+`supabase-config.js` contiene la URL del proyecto y la clave pública
+("publishable"): es intencionadamente público, como se explica en el punto
+4. La contraseña de la base de datos y la "secret key" de Supabase no están
+en ningún archivo de este repositorio ni se han compartido en ningún
+momento con este asistente.

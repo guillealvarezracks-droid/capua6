@@ -1,27 +1,11 @@
 /* panel/panel.css
    Estilos propios del panel interno. CSS plano (sin @apply) para no depender
-   de que el CDN de Tailwind procese hojas externas: la maqueta usa clases de
+   de que el CDN de Tailwind procese hojas externas: el panel usa clases de
    Tailwind directamente en el HTML/JS y aquí solo lo que Tailwind no cubre
    (grid del calendario, tarjetas, badges de estado...).
 */
 
 body { font-family: 'Nunito Sans', system-ui, sans-serif; }
-
-/* --- Aviso de modo demostración, siempre visible --- */
-.demo-banner {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #7c2d12;
-  color: #fed7aa;
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  text-align: left;
-  position: sticky;
-  top: 0;
-  z-index: 40;
-}
 
 /* --- Pestañas de navegación --- */
 .panel-tab {
