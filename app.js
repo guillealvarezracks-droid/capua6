@@ -261,7 +261,14 @@ function setupDisponibilidad() {
 
     let filas;
     try {
-      const { data, error } = await sb.rpc('disponibilidad_publica', { desde, hasta });
+      // Si la petición se queda colgada (red del móvil, un bloqueador, lo
+      // que sea) no nos quedamos esperando para siempre: a los 8 segundos
+      // se rinde y muestra el aviso, en vez de dejar el "Cargando…" fijo.
+      const conTiempoLimite = Promise.race([
+        sb.rpc('disponibilidad_publica', { desde, hasta }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('tiempo de espera agotado')), 8000)),
+      ]);
+      const { data, error } = await conTiempoLimite;
       if (error) throw error;
       filas = data || [];
     } catch (err) {
