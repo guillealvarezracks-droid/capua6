@@ -7,9 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile Menu Toggle
   setupMobileMenu();
 
-  // Reservation Modal & WhatsApp Integrations
-  setupReservationModal();
-
   // Gallery Lightbox Modal
   setupGalleryLightbox();
 
@@ -44,70 +41,6 @@ function setupMobileMenu() {
   mobileLinks.forEach(link => {
     link.addEventListener('click', () => toggleMenu(false));
   });
-}
-
-/* Quick Reservation Modal & Dynamic WhatsApp Builder */
-function setupReservationModal() {
-  const openBtns = document.querySelectorAll('.trigger-reserve-modal');
-  const modal = document.getElementById('reserve-modal');
-  const closeBtn = document.getElementById('close-reserve-modal');
-  const form = document.getElementById('reserve-form');
-  const eventSelect = document.getElementById('reserve-event-select');
-
-  if (!modal) return;
-
-  openBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const eventName = btn.getAttribute('data-event-name');
-      if (eventName && eventSelect) {
-        // Solo preselecciona si esa modalidad existe en el desplegable
-        const match = Array.from(eventSelect.options).some(o => o.value === eventName);
-        eventSelect.value = match ? eventName : eventSelect.options[0].value;
-      }
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  const closeModal = () => {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    document.body.style.overflow = '';
-  };
-
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('res-name').value.trim();
-      const people = document.getElementById('res-people').value;
-      const date = document.getElementById('res-date').value;
-      const type = document.getElementById('reserve-event-select').value;
-      const notes = document.getElementById('res-notes').value.trim();
-
-      let message = `Hola! Quiero hacer una reserva en Capua 6:%0A`;
-      message += `• Nombre: ${encodeURIComponent(name)}%0A`;
-      message += `• Personas: ${encodeURIComponent(people)}%0A`;
-      message += `• Fecha / Hora: ${encodeURIComponent(date)}%0A`;
-      message += `• Tipo de Reserva: ${encodeURIComponent(type)}`;
-
-      if (notes) {
-        message += `%0A• Notas adicionales: ${encodeURIComponent(notes)}`;
-      }
-
-      const whatsappURL = `https://wa.me/34604809890?text=${message}`;
-      window.open(whatsappURL, '_blank');
-      closeModal();
-    });
-  }
 }
 
 /* Lightbox Photo Gallery Modal */
@@ -160,11 +93,17 @@ function setupChatWidget() {
   const WA_PHONE = '34604809890';
 
   // Mensaje predefinido de WhatsApp según la opción elegida
+  const GENERAL_MESSAGE = '¡Hola! Me gustaría organizar un evento en Capua 6.\n\n' +
+    '📅 Fecha: \n' +
+    '👥 Número de personas: \n' +
+    '🕒 Hora aproximada de inicio: \n' +
+    '🎉 Modalidad: [Espicha / Híbrida / Alquiler exclusivo / Evento a medida / Necesito asesoramiento]\n\n' +
+    '¿Podéis ayudarme con la disponibilidad y las opciones?';
+
   const MESSAGES = {
-    reserva: 'Hola! Quiero reservar una mesa o reservado VIP en Capua 6. ¿Me confirmáis disponibilidad?',
-    precios: 'Hola! Me gustaría conocer los precios y los packs de reservados VIP / botellas de Capua 6.',
+    reserva: GENERAL_MESSAGE,
     ubicacion: 'Hola! ¿Me podéis confirmar la ubicación exacta y cómo llegar a Capua 6?',
-    whatsapp: 'Hola! Tengo una consulta sobre Capua 6.'
+    whatsapp: GENERAL_MESSAGE
   };
 
   const setOpen = (open) => {
@@ -187,7 +126,9 @@ function setupChatWidget() {
     btn.addEventListener('click', () => {
       const intent = btn.getAttribute('data-intent');
       const text = MESSAGES[intent] || MESSAGES.whatsapp;
-      const url = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(text)}`;
+      // Se usa api.whatsapp.com/send directamente (no wa.me): el acortador wa.me
+      // corrompe los emoji del mensaje en su redirección.
+      const url = `https://api.whatsapp.com/send/?phone=${WA_PHONE}&text=${encodeURIComponent(text)}`;
       window.open(url, '_blank');
       setOpen(false);
     });

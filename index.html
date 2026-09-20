@@ -54,7 +54,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-purple-500 selection:text-white relative">
 
@@ -81,6 +81,10 @@
             Servicios
             <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
           </a>
+          <a href="#faq" class="hover:text-purple-400 transition-colors py-2 relative group">
+            Preguntas frecuentes
+            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
+          </a>
           <a href="#galeria" class="hover:text-purple-400 transition-colors py-2 relative group">
             Galeria
             <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
@@ -93,19 +97,19 @@
 
         <!-- CTA BUTTON DESKTOP -->
         <div class="hidden md:flex items-center space-x-4">
-          <button class="trigger-reserve-modal px-5 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 hover:from-purple-500 hover:to-pink-500 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transform hover:-translate-y-0.5 transition-all">
+          <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20organizar%20un%20evento%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Modalidad:%20[Espicha%20/%20Híbrida%20/%20Alquiler%20exclusivo%20/%20Evento%20a%20medida%20/%20Necesito%20asesoramiento]%0A%0A¿Podéis%20ayudarme%20con%20la%20disponibilidad%20y%20las%20opciones?" target="_blank" rel="noopener" class="px-5 py-2.5 rounded-full text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 hover:from-purple-500 hover:to-pink-500 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transform hover:-translate-y-0.5 transition-all">
             <span class="flex items-center gap-2">
               <i data-lucide="calendar-check" class="w-4 h-4"></i>
               Reservar
             </span>
-          </button>
+          </a>
         </div>
 
         <!-- MOBILE MENU BUTTON -->
         <div class="md:hidden flex items-center gap-3">
-          <button class="trigger-reserve-modal px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-pink-500">
+          <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20organizar%20un%20evento%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Modalidad:%20[Espicha%20/%20Híbrida%20/%20Alquiler%20exclusivo%20/%20Evento%20a%20medida%20/%20Necesito%20asesoramiento]%0A%0A¿Podéis%20ayudarme%20con%20la%20disponibilidad%20y%20las%20opciones?" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-pink-500">
             Reservar
-          </button>
+          </a>
           <button id="mobile-menu-btn" aria-label="Abrir menú" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white focus:outline-none">
             <i data-lucide="menu" class="w-6 h-6"></i>
           </button>
@@ -130,6 +134,9 @@
       <a href="#servicios" class="mobile-nav-link flex items-center gap-4 text-slate-200 hover:text-purple-400">
         <i data-lucide="glass-water" class="w-5 h-5 text-pink-400"></i> Servicios
       </a>
+      <a href="#faq" class="mobile-nav-link flex items-center gap-4 text-slate-200 hover:text-purple-400">
+        <i data-lucide="help-circle" class="w-5 h-5 text-amber-400"></i> Preguntas frecuentes
+      </a>
       <a href="#galeria" class="mobile-nav-link flex items-center gap-4 text-slate-200 hover:text-purple-400">
         <i data-lucide="camera" class="w-5 h-5 text-amber-400"></i> Galería de Ambiente
       </a>
@@ -139,10 +146,10 @@
     </nav>
 
     <div class="p-6 border-t border-slate-800 space-y-4">
-      <button class="trigger-reserve-modal w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 shadow-lg shadow-purple-500/30">
+      <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20organizar%20un%20evento%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Modalidad:%20[Espicha%20/%20Híbrida%20/%20Alquiler%20exclusivo%20/%20Evento%20a%20medida%20/%20Necesito%20asesoramiento]%0A%0A¿Podéis%20ayudarme%20con%20la%20disponibilidad%20y%20las%20opciones?" target="_blank" rel="noopener" class="flex items-center justify-center w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 shadow-lg shadow-purple-500/30">
         Reservar Local
-      </button>
-      <a href="https://wa.me/34604809890?text=Hola,%20quiero%20información%20sobre%20Capua%206" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
+      </a>
+      <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20organizar%20un%20evento%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Modalidad:%20[Espicha%20/%20Híbrida%20/%20Alquiler%20exclusivo%20/%20Evento%20a%20medida%20/%20Necesito%20asesoramiento]%0A%0A¿Podéis%20ayudarme%20con%20la%20disponibilidad%20y%20las%20opciones?" target="_blank" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold bg-emerald-600/20 text-emerald-400 border border-emerald-500/30">
         <i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp Directo
       </a>
     </div>
@@ -180,7 +187,7 @@
 
       <!-- Action Buttons -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-        <a href="https://wa.me/34604809890?text=Hola,%20quiero%20reservar%20el%20local%20en%20Capua%206" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-2xl font-extrabold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 hover:from-purple-500 hover:to-pink-500 shadow-xl shadow-purple-500/30 hover:shadow-purple-500/50 transform hover:-translate-y-1 transition-all flex items-center justify-center gap-3 text-base">
+        <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20organizar%20un%20evento%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Modalidad:%20[Espicha%20/%20Híbrida%20/%20Alquiler%20exclusivo%20/%20Evento%20a%20medida%20/%20Necesito%20asesoramiento]%0A%0A¿Podéis%20ayudarme%20con%20la%20disponibilidad%20y%20las%20opciones?" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-2xl font-extrabold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 hover:from-purple-500 hover:to-pink-500 shadow-xl shadow-purple-500/30 hover:shadow-purple-500/50 transform hover:-translate-y-1 transition-all flex items-center justify-center gap-3 text-base">
           <i data-lucide="message-circle" class="w-5 h-5"></i>
           Reservar Local
         </a>
@@ -216,153 +223,180 @@
       <div class="grid gap-6 lg:gap-8 md:grid-cols-3 items-stretch">
 
         <!-- CARD 1: Pack Espicha Tradicional (destacada) -->
-        <article class="glass-card rounded-3xl p-7 sm:p-8 flex flex-col relative border-brand-gold/60 neon-glow-gold">
+        <article class="glass-card rounded-3xl p-5 sm:p-6 flex flex-col relative border-brand-gold/60 neon-glow-gold">
           <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-500 text-slate-950 font-bold text-[11px] px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
             Más elegido
           </span>
 
-          <div class="flex items-center gap-3">
-            <span class="w-11 h-11 rounded-xl bg-purple-500/15 text-purple-300 flex items-center justify-center shrink-0">
-              <i data-lucide="utensils-crossed" class="w-5 h-5"></i>
+          <div class="flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-xl bg-purple-500/15 text-purple-300 flex items-center justify-center shrink-0">
+              <i data-lucide="utensils-crossed" class="w-4 h-4"></i>
             </span>
             <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-purple-500/15 text-purple-200 border border-purple-500/25 uppercase tracking-wide">Todo incluido</span>
           </div>
 
-          <h3 class="font-heading text-2xl font-bold text-white mt-5">Pack Espicha Tradicional</h3>
-          <p class="text-sm text-slate-400 leading-relaxed mt-2">
+          <h3 class="font-heading text-xl font-bold text-white mt-3">Pack Espicha Tradicional</h3>
+          <p class="text-sm text-slate-400 leading-snug mt-1">
             La opción “todo incluido” y sin complicaciones. Ideal para cumpleaños, cenas de grupo o graduaciones.
           </p>
 
-          <div class="mt-6 pt-6 border-t border-slate-800">
+          <div class="mt-4 pt-4 border-t border-slate-800">
             <p class="flex items-baseline gap-1.5">
-              <span class="font-heading text-4xl font-bold text-purple-400">28&nbsp;€</span>
+              <span class="font-heading text-3xl font-bold text-purple-400">28&nbsp;€</span>
               <span class="text-sm text-slate-400">/ persona</span>
             </p>
-            <p class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
-              <i data-lucide="users" class="w-3.5 h-3.5"></i> Mínimo 20 personas
-            </p>
+            <div class="mt-2 flex flex-wrap gap-1.5">
+              <p class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
+                <i data-lucide="users" class="w-3.5 h-3.5"></i> Mínimo 20 personas
+              </p>
+              <p class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> 6 h de evento
+              </p>
+            </div>
           </div>
 
-          <p class="mt-6 mb-3 text-[11px] font-bold uppercase tracking-widest text-purple-400">Qué incluye</p>
-          <ul class="space-y-4">
-            <li class="flex gap-3">
-              <i data-lucide="utensils" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Comida</span><span class="text-slate-400 leading-relaxed">Menú Espicha completo: pastel de cabracho, empanada de bonito, tablas de embutidos, croquetas de jamón, tortilla, costillas al ajillo y gofres de fresa y nata.</span></span>
+          <p class="mt-4 mb-2 text-[11px] font-bold uppercase tracking-widest text-purple-400">Qué incluye</p>
+          <ul class="space-y-2">
+            <li class="flex gap-2.5">
+              <i data-lucide="utensils" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Comida:</strong> menú Espicha completo: pastel de cabracho, empanada de bonito, tablas de embutidos, croquetas de jamón, tortilla, costillas al ajillo y gofres de fresa y nata.</p>
             </li>
-            <li class="flex gap-3">
-              <i data-lucide="beer" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Bebida</span><span class="text-slate-400 leading-relaxed">2 h de barra libre de sidra, cerveza, vino y refrescos durante la cena.</span></span>
+            <li class="flex gap-2.5">
+              <i data-lucide="beer" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Bebida:</strong> 2 h de barra libre de sidra, cerveza, vino y refrescos durante la cena — <strong class="text-white">no son las 6 h</strong> del evento.</p>
             </li>
-            <li class="flex gap-3">
-              <i data-lucide="clock" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Después</span><span class="text-slate-400 leading-relaxed">El local sigue abierto para tu grupo con servicio de barra a precio estándar.</span></span>
+            <li class="flex gap-2.5">
+              <i data-lucide="clock" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Después:</strong> el resto de las 6 h de evento, servicio de barra a precios habituales.</p>
+            </li>
+            <li class="flex gap-2.5">
+              <i data-lucide="info" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Montaje:</strong> cóctel / de pie. Hay algunos asientos, pero no se garantiza para todos; para sentar a todo el grupo, consulta un evento a medida.</p>
             </li>
           </ul>
 
-          <div class="mt-auto pt-7">
-            <a href="https://wa.me/34604809890?text=Hola!%20Quiero%20reservar%20el%20Pack%20Espicha%20Tradicional%20(28%20euros%20por%20persona)%20en%20Capua%206.%20Me%20confirmais%20disponibilidad%20y%20fecha?" target="_blank" rel="noopener"
-               class="w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 shadow-lg transition-all">
+          <div class="mt-auto pt-4">
+            <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20consultar%20disponibilidad%20para%20el%20pack%20Espicha%20de%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A%0A¿Tenéis%20disponibilidad?" target="_blank" rel="noopener"
+               class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 shadow-lg transition-all">
               <i data-lucide="message-circle" class="w-4 h-4"></i> Reservar por WhatsApp
             </a>
           </div>
         </article>
 
         <!-- CARD 2: Opción Híbrida -->
-        <article class="glass-card rounded-3xl p-7 sm:p-8 flex flex-col relative">
-          <div class="flex items-center gap-3">
-            <span class="w-11 h-11 rounded-xl bg-purple-500/15 text-purple-300 flex items-center justify-center shrink-0">
-              <i data-lucide="glass-water" class="w-5 h-5"></i>
+        <article class="glass-card rounded-3xl p-5 sm:p-6 flex flex-col relative">
+          <div class="flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-xl bg-purple-500/15 text-purple-300 flex items-center justify-center shrink-0">
+              <i data-lucide="glass-water" class="w-4 h-4"></i>
             </span>
             <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-purple-500/15 text-purple-200 border border-purple-500/25 uppercase tracking-wide">Local + barra</span>
           </div>
 
-          <h3 class="font-heading text-2xl font-bold text-white mt-5">Opción Híbrida</h3>
-          <p class="text-sm text-slate-400 leading-relaxed mt-2">
+          <h3 class="font-heading text-xl font-bold text-white mt-3">Opción Híbrida</h3>
+          <p class="text-sm text-slate-400 leading-snug mt-1">
             Barra exclusiva y profesional en un local privado; tú te encargas de la comida o del catering.
           </p>
 
-          <div class="mt-6 pt-6 border-t border-slate-800">
+          <div class="mt-4 pt-4 border-t border-slate-800">
             <p class="flex items-baseline gap-1.5">
-              <span class="font-heading text-4xl font-bold text-purple-400">200&nbsp;€</span>
+              <span class="font-heading text-3xl font-bold text-purple-400">200&nbsp;€</span>
               <span class="text-sm text-slate-400">/ acceso y uso de sala</span>
             </p>
-            <p class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
-              <i data-lucide="utensils" class="w-3.5 h-3.5"></i> Tú traes la comida
-            </p>
+            <div class="mt-2 flex flex-wrap gap-1.5">
+              <p class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
+                <i data-lucide="users" class="w-3.5 h-3.5"></i> Mínimo 30 personas
+              </p>
+              <p class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> 6 h de evento
+              </p>
+            </div>
           </div>
 
-          <p class="mt-6 mb-3 text-[11px] font-bold uppercase tracking-widest text-purple-400">Cómo funciona</p>
-          <ul class="space-y-4">
-            <li class="flex gap-3">
-              <i data-lucide="utensils" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Comida</span><span class="text-slate-400 leading-relaxed">La traes tú: tu propio picoteo o el catering externo que prefieras.</span></span>
+          <p class="mt-4 mb-2 text-[11px] font-bold uppercase tracking-widest text-purple-400">Cómo funciona</p>
+          <ul class="space-y-2">
+            <li class="flex gap-2.5">
+              <i data-lucide="utensils" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Comida:</strong> la traes tú, o contratas el catering externo que prefieras.</p>
             </li>
-            <li class="flex gap-3">
-              <i data-lucide="beer" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Bebida</span><span class="text-slate-400 leading-relaxed">Solo en la barra de Capua 6, a precios habituales. No se admite bebida del exterior.</span></span>
+            <li class="flex gap-2.5">
+              <i data-lucide="beer" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Bebida:</strong> se consume en nuestra barra a precios habituales. No se permite bebida del exterior.</p>
             </li>
-            <li class="flex gap-3">
-              <i data-lucide="wine" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Servicio</span><span class="text-slate-400 leading-relaxed">Barra profesional e independiente para tu grupo en sala privada.</span></span>
+            <li class="flex gap-2.5">
+              <i data-lucide="wine" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Servicio:</strong> barra profesional e independiente para tu grupo en sala privada.</p>
             </li>
           </ul>
 
-          <div class="mt-auto pt-7">
-            <a href="https://wa.me/34604809890?text=Hola!%20Quiero%20reservar%20la%20Opcion%20Hibrida%20(Local%20y%20Barra,%20200%20euros)%20en%20Capua%206.%20Me%20confirmais%20disponibilidad%20y%20fecha?" target="_blank" rel="noopener"
-               class="w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 shadow-lg transition-all">
+          <div class="mt-auto pt-4">
+            <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20consultar%20disponibilidad%20para%20la%20modalidad%20Híbrida%20de%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A%0A¿Tenéis%20disponibilidad?" target="_blank" rel="noopener"
+               class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 shadow-lg transition-all">
               <i data-lucide="message-circle" class="w-4 h-4"></i> Reservar por WhatsApp
             </a>
           </div>
         </article>
 
         <!-- CARD 3: Alquiler Exclusivo de la Sala -->
-        <article class="glass-card rounded-3xl p-7 sm:p-8 flex flex-col relative">
-          <div class="flex items-center gap-3">
-            <span class="w-11 h-11 rounded-xl bg-purple-500/15 text-purple-300 flex items-center justify-center shrink-0">
-              <i data-lucide="key-round" class="w-5 h-5"></i>
+        <article class="glass-card rounded-3xl p-5 sm:p-6 flex flex-col relative">
+          <div class="flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-xl bg-purple-500/15 text-purple-300 flex items-center justify-center shrink-0">
+              <i data-lucide="key-round" class="w-4 h-4"></i>
             </span>
             <span class="px-3 py-1 rounded-full text-[11px] font-bold bg-purple-500/15 text-purple-200 border border-purple-500/25 uppercase tracking-wide">Exclusivo</span>
           </div>
 
-          <h3 class="font-heading text-2xl font-bold text-white mt-5">Alquiler Exclusivo de la Sala</h3>
-          <p class="text-sm text-slate-400 leading-relaxed mt-2">
+          <h3 class="font-heading text-xl font-bold text-white mt-3">Alquiler Exclusivo de la Sala</h3>
+          <p class="text-sm text-slate-400 leading-snug mt-1">
             El local entero para tu grupo. Máxima privacidad y libertad para organizarlo todo a tu aire.
           </p>
 
-          <div class="mt-6 pt-6 border-t border-slate-800">
+          <div class="mt-4 pt-4 border-t border-slate-800">
             <p class="flex items-baseline gap-1.5">
-              <span class="font-heading text-4xl font-bold text-purple-400">500&nbsp;€</span>
+              <span class="font-heading text-3xl font-bold text-purple-400">500&nbsp;€</span>
               <span class="text-sm text-slate-400">/ alquiler de sala</span>
             </p>
-            <p class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
-              <i data-lucide="party-popper" class="w-3.5 h-3.5"></i> Comida y bebida libres
-            </p>
+            <div class="mt-2 flex flex-wrap gap-1.5">
+              <p class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
+                <i data-lucide="users" class="w-3.5 h-3.5"></i> Sin mínimo de asistentes
+              </p>
+              <p class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-200 border border-purple-500/20">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> 7 h de evento
+              </p>
+            </div>
           </div>
 
-          <p class="mt-6 mb-3 text-[11px] font-bold uppercase tracking-widest text-purple-400">Qué incluye</p>
-          <ul class="space-y-4">
-            <li class="flex gap-3">
-              <i data-lucide="speaker" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Sala</span><span class="text-slate-400 leading-relaxed">Cesión íntegra en pleno centro de Gijón, con sonido profesional, iluminación de fiesta y climatización.</span></span>
+          <p class="mt-4 mb-2 text-[11px] font-bold uppercase tracking-widest text-purple-400">Qué incluye</p>
+          <ul class="space-y-2">
+            <li class="flex gap-2.5">
+              <i data-lucide="speaker" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Sala:</strong> cesión íntegra en pleno centro de Gijón, con sonido profesional, iluminación de fiesta y climatización.</p>
             </li>
-            <li class="flex gap-3">
-              <i data-lucide="utensils" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Comida</span><span class="text-slate-400 leading-relaxed">La organizas tú, sin restricciones.</span></span>
+            <li class="flex gap-2.5">
+              <i data-lucide="utensils" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Comida:</strong> puedes traer tu propia comida.</p>
             </li>
-            <li class="flex gap-3">
-              <i data-lucide="beer" class="w-4 h-4 text-purple-400 shrink-0 mt-1"></i>
-              <span class="text-sm"><span class="block font-semibold text-white">Bebida</span><span class="text-slate-400 leading-relaxed">La pones tú: entrada libre de alimentos y bebidas del exterior.</span></span>
+            <li class="flex gap-2.5">
+              <i data-lucide="beer" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i>
+              <p class="text-sm text-slate-400 leading-snug"><strong class="text-white font-semibold">Bebida:</strong> puedes traer tu propia bebida.</p>
             </li>
           </ul>
 
-          <div class="mt-auto pt-7">
-            <a href="https://wa.me/34604809890?text=Hola!%20Quiero%20reservar%20el%20Alquiler%20Exclusivo%20de%20la%20Sala%20(500%20euros)%20en%20Capua%206.%20Me%20confirmais%20disponibilidad%20y%20fecha?" target="_blank" rel="noopener"
-               class="w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 shadow-lg transition-all">
+          <div class="mt-auto pt-4">
+            <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20consultar%20disponibilidad%20para%20el%20Alquiler%20Exclusivo%20de%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A%0A¿Tenéis%20disponibilidad?" target="_blank" rel="noopener"
+               class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 shadow-lg transition-all">
               <i data-lucide="message-circle" class="w-4 h-4"></i> Reservar por WhatsApp
             </a>
           </div>
         </article>
 
+      </div>
+
+      <!-- NOTA COMÚN: AFORO Y HORARIO -->
+      <div class="mt-8 flex items-start sm:items-center gap-3 max-w-3xl mx-auto px-5 py-4 rounded-2xl bg-purple-950/40 border border-purple-500/20 text-xs sm:text-sm text-purple-200">
+        <i data-lucide="info" class="w-5 h-5 text-purple-400 shrink-0 mt-0.5 sm:mt-0"></i>
+        <span>
+          <strong class="text-white">Aforo máximo: 50 personas</strong> (no confundir con plazas sentadas). La hora de inicio se acuerda contigo para que la duración contratada encaje dentro del horario autorizado — más detalles en las <a href="#faq" class="underline decoration-purple-400/50 hover:text-white">Preguntas Frecuentes</a>.
+        </span>
       </div>
 
       <!-- BANNER: EVENTOS A MEDIDA -->
@@ -381,13 +415,202 @@
               </p>
             </div>
             <div class="shrink-0 w-full lg:w-auto">
-              <a href="https://wa.me/34604809890?text=Hola!%20Quiero%20organizar%20un%20evento%20a%20medida%20en%20Capua%206%20(corporativo,%20presentacion%20o%20fiesta%20privada).%20Me%20pasais%20un%20presupuesto?" target="_blank" rel="noopener"
+              <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20consultar%20un%20evento%20a%20medida%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Tipo%20de%20evento%20o%20idea:%20%0A%0A¿Podemos%20valorar%20las%20opciones%20y%20el%20presupuesto?" target="_blank" rel="noopener"
                  class="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 shadow-lg transition-all">
                 <i data-lucide="message-circle" class="w-5 h-5"></i> Reservar por WhatsApp
               </a>
             </div>
           </div>
         </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECCIÓN 3.5: PREGUNTAS FRECUENTES -->
+  <section id="faq" class="py-20 relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+        <span class="section-label">
+          <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Preguntas frecuentes
+        </span>
+        <h2 class="font-heading text-3xl sm:text-5xl font-bold text-white">
+          Resolvemos tus <span class="text-accent font-normal">dudas</span>
+        </h2>
+        <div class="divider-gold divider-gold--center"></div>
+        <p class="text-slate-400 text-base">
+          Aforo, horarios, barra libre y cómo reservar: todo lo que necesitas saber antes de escribirnos.
+        </p>
+      </div>
+
+      <!-- Accordion -->
+      <div class="faq-list">
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Cuál es el aforo máximo?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>El aforo máximo es de 50 personas. Disponemos de algunos asientos, pero no se garantiza asiento para todos los asistentes. Si necesitas un montaje para comer sentados, consulta las opciones de evento a medida.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Hay un mínimo de asistentes?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>La espicha requiere un mínimo de 20 personas y la modalidad híbrida, de 30. El alquiler exclusivo no tiene mínimo de asistentes. Siempre debe respetarse el aforo máximo de 50 personas.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Cuánto dura cada modalidad?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>La espicha y la modalidad híbrida incluyen 6 horas de evento. El alquiler exclusivo incluye 7 horas. La hora de inicio se acuerda para que la duración contratada encaje dentro del horario autorizado.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿La espicha incluye barra libre durante todo el evento?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>No. Incluye 2 horas de barra libre de sidra, cerveza, vino y refrescos durante la cena. Después, el servicio de barra continúa a precios habituales durante el tiempo restante del evento.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Puedo llevar mi propia comida y bebida?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <ul>
+              <li><strong>Espicha:</strong> incluye el menú y las bebidas indicadas en el pack.</li>
+              <li><strong>Híbrida:</strong> puedes traer comida o catering externo. Las bebidas se consumen en nuestra barra; no se permite bebida del exterior.</li>
+              <li><strong>Exclusiva:</strong> puedes traer tu propia comida y bebida.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Qué días y en qué horarios puedo reservar?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>Puedes consultar cualquier día, sujeto a disponibilidad y acuerdo con el propietario. El inicio es flexible, pero el evento debe terminar como máximo a las 03:30h de la madrugada siguiente de domingo a jueves, o a las 05:30h los viernes, sábados y vísperas de festivo. Las vísperas de festivo tienen el límite de las 05:30h aunque caigan entre semana.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Se puede ampliar la duración?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>Consúltalo con el propietario para valorar la disponibilidad y el presupuesto. Cualquier ampliación debe respetar el horario máximo autorizado. No hay una tarifa fija publicada.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Cómo consulto disponibilidad y confirmo una reserva?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>Puedes contactar por WhatsApp, en persona o mediante otro medio facilitado por el propietario. La reserva debe confirmarse expresamente con él según las condiciones acordadas para el evento. Enviar una consulta no bloquea una fecha ni confirma una reserva.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Hay que pagar señal?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>La necesidad de señal y su importe dependen del evento. El propietario te comunicará las condiciones antes de realizar cualquier pago. No hay una cantidad o porcentaje fijo para todos los eventos.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Cómo se paga y cuándo se abona el resto?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>Se admite pago en efectivo o por transferencia. El importe restante se abona el día del evento.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Con cuánta antelación debo reservar?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>No hay una antelación mínima obligatoria, pero recomendamos consultar cuanto antes para tener más opciones de conseguir la fecha que prefieras.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Qué ocurre si cancelo o necesito cambiar la fecha?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>Antes de realizar cualquier pago, te comunicaremos las condiciones de cancelación, devolución de la señal y cambio de fecha aplicables a tu evento. Los cambios de fecha están sujetos a disponibilidad y acuerdo con el propietario.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Hasta cuándo puedo cambiar el número de asistentes de la espicha?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>Hasta dos días antes del evento, manteniendo los 28 € por persona y el mínimo de 20 personas.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Qué pasa si alguien no asiste después de confirmar el número?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>Se cobran las plazas confirmadas. Si surge algún imprevisto, consúltalo directamente con el propietario para que valore el caso.</p>
+          </div>
+        </details>
+
+        <details class="faq-item" name="faq-group">
+          <summary class="faq-item__q">
+            <span>¿Cuál es el horario del karaoke?</span>
+            <i data-lucide="chevron-down" class="faq-item__chevron"></i>
+          </summary>
+          <div class="faq-item__a">
+            <p>Domingos de 18:00h a 22:00h. Este horario es independiente de las reservas para eventos privados.</p>
+          </div>
+        </details>
+
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-10">
+        <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20organizar%20un%20evento%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Modalidad:%20[Espicha%20/%20Híbrida%20/%20Alquiler%20exclusivo%20/%20Evento%20a%20medida%20/%20Necesito%20asesoramiento]%0A%0A¿Podéis%20ayudarme%20con%20la%20disponibilidad%20y%20las%20opciones?" target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-extrabold text-slate-950 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-500 hover:to-pink-400 shadow-xl shadow-purple-500/30 transition-all">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+          Consultar disponibilidad por WhatsApp
+        </a>
       </div>
 
     </div>
@@ -492,7 +715,7 @@
           <!-- Social Links & Contact -->
           <div class="flex items-center justify-between pt-2">
             <div class="flex items-center space-x-4">
-              <a href="https://wa.me/34604809890" target="_blank" aria-label="WhatsApp Capua 6" class="p-3 rounded-xl glass-card text-emerald-400 hover:text-white hover:bg-emerald-600 transition-all">
+              <a href="https://api.whatsapp.com/send/?phone=34604809890&text=¡Hola!%20Me%20gustaría%20organizar%20un%20evento%20en%20Capua%206.%0A%0A📅%20Fecha:%20%0A👥%20Número%20de%20personas:%20%0A🕒%20Hora%20aproximada%20de%20inicio:%20%0A🎉%20Modalidad:%20[Espicha%20/%20Híbrida%20/%20Alquiler%20exclusivo%20/%20Evento%20a%20medida%20/%20Necesito%20asesoramiento]%0A%0A¿Podéis%20ayudarme%20con%20la%20disponibilidad%20y%20las%20opciones?" target="_blank" aria-label="WhatsApp Capua 6" class="p-3 rounded-xl glass-card text-emerald-400 hover:text-white hover:bg-emerald-600 transition-all">
                 <i data-lucide="message-circle" class="w-6 h-6"></i>
               </a>
             </div>
@@ -512,17 +735,36 @@
                 <i data-lucide="clock" class="w-6 h-6"></i>
               </div>
               <div>
-                <h3 class="text-2xl font-bold text-white">Horarios de Apertura</h3>
-                <p class="text-xs text-slate-400">Capua 6 Gijón</p>
+                <h3 class="text-2xl font-bold text-white">Horarios</h3>
+                <p class="text-xs text-slate-400">Karaoke y eventos privados en Capua 6</p>
               </div>
             </div>
 
-            <div class="pt-2 text-sm">
-              <div class="flex justify-between items-center py-3 px-4 rounded-xl bg-slate-900/60 border border-slate-800">
+            <!-- Karaoke -->
+            <div class="pt-2 space-y-3">
+              <p class="text-[11px] font-bold uppercase tracking-widest text-amber-400">Karaoke</p>
+              <div class="flex justify-between items-center py-3 px-4 rounded-xl bg-slate-900/60 border border-slate-800 text-sm">
                 <span class="font-semibold text-slate-200 flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-amber-400"></span> Domingos (Karaoke)
+                  <span class="w-2 h-2 rounded-full bg-amber-400"></span> Domingos
                 </span>
                 <span class="font-bold text-amber-300">18:00h – 22:00h</span>
+              </div>
+            </div>
+
+            <!-- Eventos privados -->
+            <div class="space-y-3">
+              <p class="text-[11px] font-bold uppercase tracking-widest text-purple-400">Eventos privados</p>
+              <div class="rounded-xl bg-slate-900/60 border border-slate-800 p-4 space-y-3 text-sm">
+                <p class="text-slate-300">Cualquier día, con reserva y sujeto a disponibilidad. Hora de inicio a convenir.</p>
+                <div class="flex justify-between items-center gap-3 pt-3 border-t border-slate-800/80">
+                  <span class="text-slate-300">Domingo a jueves</span>
+                  <span class="font-bold text-purple-300 text-right">Hasta las 03:30h</span>
+                </div>
+                <div class="flex justify-between items-center gap-3">
+                  <span class="text-slate-300">Viernes, sábados y vísperas de festivo</span>
+                  <span class="font-bold text-purple-300 text-right shrink-0">Hasta las 05:30h</span>
+                </div>
+                <p class="text-xs text-slate-400 pt-1">Las vísperas de festivo tienen el límite de las 05:30h aunque caigan entre semana. Las 6-7 horas contratadas deben encajar dentro de estos límites.</p>
               </div>
             </div>
 
@@ -579,9 +821,6 @@
           <button class="chat-reply" type="button" data-intent="reserva">
             <i data-lucide="calendar-check"></i> Quiero reservar
           </button>
-          <button class="chat-reply" type="button" data-intent="precios">
-            <i data-lucide="crown"></i> Ver precios y packs
-          </button>
           <button class="chat-reply" type="button" data-intent="ubicacion">
             <i data-lucide="map-pin"></i> Ubicación
           </button>
@@ -600,68 +839,6 @@
       <i data-lucide="message-circle" class="chat-launcher__icon chat-launcher__icon--open"></i>
       <i data-lucide="x" class="chat-launcher__icon chat-launcher__icon--close"></i>
     </button>
-  </div>
-
-  <!-- RESERVATION MODAL -->
-  <div id="reserve-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
-    <div class="glass-card w-full max-w-lg p-6 sm:p-8 rounded-3xl border-purple-500/40 relative animate-fadeIn">
-      
-      <button id="close-reserve-modal" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-full bg-slate-900/80">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="mb-6">
-        <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">Capua 6 Gijón</span>
-        <h3 class="text-2xl font-extrabold text-white mt-1">Reserva tu evento</h3>
-        <p class="text-xs text-slate-400 mt-1">Completa los datos y abre la solicitud directa en WhatsApp.</p>
-      </div>
-
-      <form id="reserve-form" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1" for="res-name">Tu Nombre</label>
-          <input type="text" id="res-name" required placeholder="Ej. Carlos G." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-purple-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1" for="res-people">Nº de personas</label>
-            <select id="res-people" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-sm focus:outline-none focus:border-purple-500">
-              <option value="Menos de 20">Menos de 20</option>
-              <option value="20 - 30 personas" selected>20 - 30 personas</option>
-              <option value="30 - 50 personas">30 - 50 personas</option>
-              <option value="50 - 80 personas">50 - 80 personas</option>
-              <option value="Más de 80">Más de 80</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1" for="reserve-event-select">Modalidad</label>
-            <select id="reserve-event-select" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-sm focus:outline-none focus:border-purple-500">
-              <option value="Pack Espicha Tradicional">Pack Espicha Tradicional (28 €/pers.)</option>
-              <option value="Opción Híbrida (Local + Barra)">Opción Híbrida — Local + Barra (200 €)</option>
-              <option value="Alquiler Exclusivo de Sala">Alquiler Exclusivo de Sala (500 €)</option>
-              <option value="Evento a medida">Evento a medida / Corporativo</option>
-              <option value="Otra consulta">Otra consulta</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1" for="res-date">Fecha y hora estimada</label>
-          <input type="text" id="res-date" required placeholder="Ej. Sábado 12 de abril, a partir de las 21:00h" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-purple-500">
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1" for="res-notes">Comentarios / peticiones especiales (opcional)</label>
-          <textarea id="res-notes" rows="2" placeholder="Cuéntanos: motivo de la celebración, si necesitáis karaoke, decoración, catering..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-purple-500"></textarea>
-        </div>
-
-        <button type="submit" class="w-full py-3.5 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 hover:from-purple-500 hover:to-pink-500 shadow-xl shadow-purple-500/30 flex items-center justify-center gap-2 text-sm mt-2">
-          <i data-lucide="message-circle" class="w-4 h-4"></i> Confirmar por WhatsApp
-        </button>
-      </form>
-
-    </div>
   </div>
 
   <!-- GALLERY LIGHTBOX MODAL -->

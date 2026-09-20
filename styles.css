@@ -509,6 +509,86 @@ html { scroll-behavior: smooth; }
   .legal-back span { display: none; }
 }
 
+/* === PREGUNTAS FRECUENTES (ACORDEÓN) === */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.3s var(--ease-smooth);
+}
+
+.faq-item[open] { border-color: rgba(var(--color-primary-rgb), 0.35); }
+
+.faq-item__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--color-text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.faq-item__q::-webkit-details-marker { display: none; }
+.faq-item__q::marker { display: none; content: ""; }
+.faq-item__q:hover { color: var(--color-primary-light); }
+.faq-item__q:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+.faq-item__chevron {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-primary);
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.faq-item[open] .faq-item__chevron { transform: rotate(180deg); }
+
+.faq-item__a { padding: 0 22px 20px; }
+
+.faq-item__a p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin: 0 0 10px;
+  max-width: none;
+}
+.faq-item__a p:last-child { margin-bottom: 0; }
+
+.faq-item__a ul {
+  margin: 8px 0 0;
+  padding-left: 1.1rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.faq-item__a ul li { margin-bottom: 4px; }
+.faq-item__a ul li strong { color: var(--color-text-light); }
+
+@media (max-width: 480px) {
+  .faq-item__q { padding: 16px 18px; font-size: 0.95rem; }
+  .faq-item__a { padding: 0 18px 18px; }
+}
+
 /* === REDUCED MOTION === */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
