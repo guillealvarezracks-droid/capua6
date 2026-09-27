@@ -59,6 +59,15 @@ let panelYaMontado = false; // evita cablear los listeners del panel más de una
 async function iniciar() {
   wireLogin();
 
+  if (!supabase) {
+    // No se ha podido cargar la librería de Supabase (bloqueador de
+    // anuncios, DNS privado, red que corta el acceso al CDN...). Se avisa
+    // aquí mismo, en vez de dejar que el botón "Entrar" recargue la página
+    // sin explicación — que era el fallo real detectado en móvil.
+    mostrarErrorCarga('No se ha podido cargar el panel (revisa tu conexión o desactiva bloqueadores de anuncios/DNS privado) y recarga la página.');
+    return;
+  }
+
   const { data: { session } } = await supabase.auth.getSession();
   if (session) await mostrarApp(session);
   else mostrarLogin();
@@ -67,6 +76,17 @@ async function iniciar() {
     if (event === 'SIGNED_IN' && session) mostrarApp(session);
     if (event === 'SIGNED_OUT') mostrarLogin();
   });
+}
+
+function mostrarErrorCarga(mensaje) {
+  mostrarLogin();
+  const box = $('#login-error');
+  if (box) {
+    box.textContent = mensaje;
+    box.classList.remove('hidden');
+  }
+  const boton = $('#form-login button[type="submit"]');
+  if (boton) boton.disabled = true;
 }
 
 document.addEventListener('DOMContentLoaded', iniciar);
@@ -78,6 +98,13 @@ function wireLogin() {
     const boton = f.querySelector('button[type="submit"]');
     const errorBox = $('#login-error');
     errorBox.classList.add('hidden');
+
+    if (!supabase) {
+      errorBox.textContent = 'No se ha podido cargar el panel (revisa tu conexión o desactiva bloqueadores de anuncios/DNS privado) y recarga la página.';
+      errorBox.classList.remove('hidden');
+      return;
+    }
+
     boton.disabled = true;
     boton.textContent = 'Entrando…';
 
