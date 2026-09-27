@@ -10,10 +10,10 @@
 //   3. Vista: Agenda
 //   4. Vista: Calendario
 //   5. Vista: Bloqueos
-//   6. Modal: crear/editar reserva
-//   7. Modal: ficha de reserva (detalle + pagos)
-//   8. Modal: bloquear fecha
-//   9. Acciones (confirmar, cancelar, pagos, bloqueos)
+//   6. Vista: Resumen mensual
+//   7. Modal: crear/editar reserva (incluye acciones de guardado)
+//   8. Modal: ficha de reserva (detalle + pagos + confirmar/cancelar)
+//   9. Modal: bloquear fecha
 
 import * as BR from './business-rules.js';
 import { ReservasRepo, BloqueosRepo } from './data-layer.js';
@@ -22,13 +22,15 @@ import { supabase } from './supabase-client.js';
 // === 1. ACCESO (LOGIN/LOGOUT) Y ARRANQUE ====================================
 
 const state = {
-  tab: 'agenda', // 'agenda' | 'calendario' | 'bloqueos'
+  tab: 'agenda', // 'agenda' | 'calendario' | 'bloqueos' | 'resumen'
   reservas: [],
   bloqueos: [],
   filtroAgenda: 'todas', // 'todas' | 'consulta' | 'pendiente' | 'confirmada' | 'cancelada'
   calMes: new Date().getMonth(),
   calAnio: new Date().getFullYear(),
   diaSeleccionado: null, // 'YYYY-MM-DD' en la vista de calendario
+  resumenMes: new Date().getMonth(),
+  resumenAnio: new Date().getFullYear(),
 };
 
 async function cargarDatos() {
@@ -136,6 +138,7 @@ function renderTab() {
   if (state.tab === 'agenda') renderAgenda(root);
   else if (state.tab === 'calendario') renderCalendario(root);
   else if (state.tab === 'bloqueos') renderBloqueos(root);
+  else if (state.tab === 'resumen') renderResumen(root);
   iconos();
 }
 
@@ -417,7 +420,82 @@ function renderBloqueos(root) {
   });
 }
 
-// === 6. MODAL: CREAR / EDITAR RESERVA ========================================
+// === 6. VISTA: RESUMEN MENSUAL ===============================================
+//
+// Todo se calcula en el navegador a partir de las reservas ya cargadas
+// (state.reservas): no hace falta ninguna consulta ni tabla nueva en
+// Supabase. "Dinero cobrado" se basa en la FECHA DEL PAGO (payments[].date),
+// no en la fecha del evento — así el mes refleja lo que entró de caja de
+// verdad ese mes, aunque sea la señal de una fiesta de dentro de dos meses.
+
+function renderResumen(root) {
+  const { resumenMes, resumenAnio } = state;
+  const prefijoMes = `${resumenAnio}-${String(resumenMes + 1).padStart(2, '0')}`;
+
+  const confirmadasDelMes = state.reservas.filter((r) => r.status === 'confirmada' && r.startDate.startsWith(prefijoMes));
+  const personasDelMes = confirmadasDelMes.reduce((sum, r) => sum + (Number(r.attendees) || 0), 0);
+  const pendienteDelMes = confirmadasDelMes.reduce((sum, r) => sum + (BR.importePendiente(r.totalPrice, r.payments) || 0), 0);
+
+  let cobradoDelMes = 0;
+  for (const r of state.reservas) {
+    for (const p of r.payments || []) {
+      if (typeof p.date === 'string' && p.date.startsWith(prefijoMes)) cobradoDelMes += Number(p.amount) || 0;
+    }
+  }
+
+  const confirmadasOrdenadas = [...confirmadasDelMes].sort((a, b) => BR.toComparable(a.startDate, a.startTime).localeCompare(BR.toComparable(b.startDate, b.startTime)));
+
+  root.innerHTML = `
+    <div class="flex items-center justify-between mb-4">
+      <button type="button" id="resumen-prev" class="panel-btn-icon" aria-label="Mes anterior"><i data-lucide="chevron-left"></i></button>
+      <h2 class="panel-h2 !my-0">${MESES[resumenMes]} ${resumenAnio}</h2>
+      <button type="button" id="resumen-next" class="panel-btn-icon" aria-label="Mes siguiente"><i data-lucide="chevron-right"></i></button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <div class="stat-card">
+        <span class="stat-num">${confirmadasDelMes.length}</span>
+        <span class="stat-label">Fiestas confirmadas</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">${personasDelMes}</span>
+        <span class="stat-label">Personas atendidas</span>
+      </div>
+      <div class="stat-card stat-card--gold">
+        <span class="stat-num">${dinero(cobradoDelMes)}</span>
+        <span class="stat-label">Cobrado este mes</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">${dinero(pendienteDelMes)}</span>
+        <span class="stat-label">Pendiente de cobro</span>
+      </div>
+    </div>
+    <p class="text-xs text-neutral-500 mb-6">
+      "Cobrado este mes" son los pagos registrados con fecha dentro de ${MESES[resumenMes]} (aunque sean señales de fiestas de otro mes).
+      "Pendiente de cobro" es lo que falta de las fiestas confirmadas que se celebran este mes.
+    </p>
+
+    <h2 class="panel-h2">Fiestas confirmadas de ${MESES[resumenMes]}</h2>
+    <div class="space-y-2">
+      ${confirmadasOrdenadas.length ? confirmadasOrdenadas.map(tarjetaAgenda).join('') : vacioHtml('No hay fiestas confirmadas este mes.')}
+    </div>
+  `;
+
+  $('#resumen-prev', root).addEventListener('click', () => cambiarMesResumen(-1));
+  $('#resumen-next', root).addEventListener('click', () => cambiarMesResumen(1));
+  $$('.tarjeta-reserva', root).forEach((el) => {
+    el.addEventListener('click', () => abrirFichaReserva(el.dataset.id));
+  });
+}
+
+function cambiarMesResumen(delta) {
+  state.resumenMes += delta;
+  if (state.resumenMes < 0) { state.resumenMes = 11; state.resumenAnio -= 1; }
+  if (state.resumenMes > 11) { state.resumenMes = 0; state.resumenAnio += 1; }
+  renderTab();
+}
+
+// === 7. MODAL: CREAR / EDITAR RESERVA ========================================
 
 function abrirModal(html) {
   const root = $('#modal-root');
@@ -621,7 +699,7 @@ function mostrarErroresForm(errores) {
   if (modalRoot) modalRoot.scrollTop = 0;
 }
 
-// === 7. MODAL: FICHA DE RESERVA (detalle + pagos) ============================
+// === 8. MODAL: FICHA DE RESERVA (detalle + pagos) ============================
 
 function abrirFichaReserva(id) {
   const r = state.reservas.find((x) => x.id === id);
@@ -773,7 +851,7 @@ function abrirFichaReserva(id) {
   });
 }
 
-// === 8. MODAL: BLOQUEAR FECHA =================================================
+// === 9. MODAL: BLOQUEAR FECHA =================================================
 
 function abrirFormularioBloqueo(fechaPrefijada = null) {
   abrirModal(`
