@@ -472,9 +472,11 @@ function renderBloqueos(root) {
 //
 // Todo se calcula en el navegador a partir de las reservas ya cargadas
 // (state.reservas): no hace falta ninguna consulta ni tabla nueva en
-// Supabase. "Dinero cobrado" se basa en la FECHA DEL PAGO (payments[].date),
-// no en la fecha del evento — así el mes refleja lo que entró de caja de
-// verdad ese mes, aunque sea la señal de una fiesta de dentro de dos meses.
+// Supabase. "Dinero cobrado" se cuenta por el MES DE LA FIESTA (r.startDate),
+// no por la fecha en que se pagó cada cosa: una señal de una fiesta de
+// octubre pagada en septiembre cuenta en octubre, porque es la fiesta a la
+// que pertenece. (Antes se contaba por fecha de pago, más parecido a un
+// extracto bancario; se cambió a petición expresa del dueño el 27/09/2026.)
 
 function renderResumen(root) {
   const { resumenMes, resumenAnio } = state;
@@ -483,13 +485,7 @@ function renderResumen(root) {
   const confirmadasDelMes = state.reservas.filter((r) => r.status === 'confirmada' && r.startDate.startsWith(prefijoMes));
   const personasDelMes = confirmadasDelMes.reduce((sum, r) => sum + (Number(r.attendees) || 0), 0);
   const pendienteDelMes = confirmadasDelMes.reduce((sum, r) => sum + (BR.importePendiente(r.totalPrice, r.payments) || 0), 0);
-
-  let cobradoDelMes = 0;
-  for (const r of state.reservas) {
-    for (const p of r.payments || []) {
-      if (typeof p.date === 'string' && p.date.startsWith(prefijoMes)) cobradoDelMes += Number(p.amount) || 0;
-    }
-  }
+  const cobradoDelMes = confirmadasDelMes.reduce((sum, r) => sum + BR.totalPagado(r.payments), 0);
 
   const confirmadasOrdenadas = [...confirmadasDelMes].sort((a, b) => BR.toComparable(a.startDate, a.startTime).localeCompare(BR.toComparable(b.startDate, b.startTime)));
 
@@ -519,8 +515,7 @@ function renderResumen(root) {
       </div>
     </div>
     <p class="text-xs text-neutral-500 mb-6">
-      "Cobrado este mes" son los pagos registrados con fecha dentro de ${MESES[resumenMes]} (aunque sean señales de fiestas de otro mes).
-      "Pendiente de cobro" es lo que falta de las fiestas confirmadas que se celebran este mes.
+      "Cobrado" y "Pendiente" son de las fiestas confirmadas que se celebran en ${MESES[resumenMes]}, aunque los pagos se hayan hecho en otro mes (por ejemplo, una señal pagada antes).
     </p>
 
     <h2 class="panel-h2">Fiestas confirmadas de ${MESES[resumenMes]}</h2>
