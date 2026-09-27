@@ -80,18 +80,34 @@ function wireLogin() {
     errorBox.classList.add('hidden');
     boton.disabled = true;
     boton.textContent = 'Entrando…';
-    const { error } = await supabase.auth.signInWithPassword({
-      email: f.email.value.trim(),
-      password: f.password.value,
-    });
-    boton.disabled = false;
-    boton.textContent = 'Entrar';
-    if (error) {
-      errorBox.textContent = 'No se pudo iniciar sesión: revisa el email y la contraseña.';
+
+    try {
+      // Igual que en el calendario público: si la conexión se queda colgada
+      // (típico en móvil con mala cobertura), no nos quedamos esperando
+      // para siempre — a los 10 segundos se da por fallido y se avisa.
+      const conTiempoLimite = Promise.race([
+        supabase.auth.signInWithPassword({
+          email: f.email.value.trim(),
+          password: f.password.value,
+        }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('tiempo de espera agotado')), 10000)),
+      ]);
+      const { error } = await conTiempoLimite;
+      if (error) {
+        errorBox.textContent = 'No se pudo iniciar sesión: revisa el email y la contraseña.';
+        errorBox.classList.remove('hidden');
+        return;
+      }
+      f.reset();
+    } catch (err) {
+      // Fallo de red/tiempo agotado, no de credenciales: mensaje distinto
+      // para no liar pensando que el email o la contraseña están mal.
+      errorBox.textContent = 'No se ha podido conectar para iniciar sesión (revisa tu conexión). Vuelve a intentarlo.';
       errorBox.classList.remove('hidden');
-      return;
+    } finally {
+      boton.disabled = false;
+      boton.textContent = 'Entrar';
     }
-    f.reset();
   });
 
   $('#btn-logout')?.addEventListener('click', async () => {
@@ -115,7 +131,12 @@ async function mostrarApp(session) {
     wireNuevaReserva();
     panelYaMontado = true;
   }
-  await refrescar();
+  try {
+    await refrescar();
+  } catch (err) {
+    const root = $('#tab-content');
+    if (root) root.innerHTML = `<p class="text-sm text-rose-400 text-center py-10">No se han podido cargar los datos (${esc(err.message)}). Recarga la página para volver a intentarlo.</p>`;
+  }
 }
 
 function wireTabs() {
