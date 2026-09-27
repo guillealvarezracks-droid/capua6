@@ -22,7 +22,7 @@ import { supabase } from './supabase-client.js';
 // === 1. ACCESO (LOGIN/LOGOUT) Y ARRANQUE ====================================
 
 const state = {
-  tab: 'agenda', // 'agenda' | 'calendario' | 'bloqueos' | 'resumen'
+  tab: 'resumen', // 'resumen' | 'agenda' | 'calendario' | 'bloqueos'
   reservas: [],
   bloqueos: [],
   filtroAgenda: 'todas', // 'todas' | 'consulta' | 'pendiente' | 'confirmada' | 'cancelada'
